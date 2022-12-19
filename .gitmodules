@@ -1,0 +1,4 @@
+[submodule "pycode128/lib"]
+	path = pycode128/lib
+	url = https://github.com/gpongelli/code128
+	branch = master
