@@ -11,7 +11,11 @@ from os.path import dirname
 # list of tuples (python_module, dict of C/C++ library build data ),
 #   python_module is the extension that uses those C/C++ library info.
 # the dict can be extended with all the kwargs needed by Extension to correctly build C/C++ sourcecode
-_LIBS = [('pycode128', {"libs": ['libs/code128']})]
+_LIBS = [('pycode128', {"libs": ['libs/code128'],
+                        # always define PY_SSIZE_T_CLEAN , see https://docs.python.org/3/extending/extending.html
+                        "define_macros": [("PY_SSIZE_T_CLEAN",)]
+                        })
+         ]
 
 
 class CustomDevelop(develop):
@@ -78,6 +82,7 @@ def build(setup_kwargs):
             ],
             "ext_modules": [Extension(splitext(relpath(_unix_form(path), start='.').replace(os.sep, '.'))[0],
                                       sources=[_unix_form(path)],
+                                      define_macros=_source_libs['define_macros'],
                                       include_dirs=_source_libs['libs'])
                             for _py_lib, _source_libs in _LIBS
                             for root, _, _ in os.walk(os.sep.join([_py_lib]))
@@ -118,6 +123,7 @@ if __name__ == '__main__':
 
     ext = [Extension(splitext(relpath(_unix_form(path), start='.').replace(os.sep, '.'))[0],
                      sources=[_unix_form(path)],
+                     define_macros=_source_libs['define_macros'],
                      include_dirs=_source_libs['libs'])
            for _py_lib, _source_libs in _LIBS
            for root, _, _ in os.walk(os.sep.join([_py_lib]))
