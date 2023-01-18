@@ -1,4 +1,4 @@
-* Code128 library's python wrapper version:
+* Code128 library's python extension version:
 * Python version:
 * Operating System:
 

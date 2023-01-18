@@ -1,4 +1,4 @@
-# Code128 library's python wrapper
+# Code128 library's python extension
 
 
 [![pypi](https://img.shields.io/pypi/v/pycode128.svg)](https://pypi.org/project/pycode128/)
@@ -8,7 +8,7 @@
 
 
 
-Python wrapper for Code128 barcode generator library
+Python extension for Code128 barcode generator library
 
 
 * Documentation: <https://gpongelli.github.io/pycode128>

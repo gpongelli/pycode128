@@ -10,7 +10,7 @@ def main():
     _str = f"pycode128 v{__version__}"
     click.echo(_str)
     click.echo("=" * len(_str))
-    click.echo("Python wrapper for Code128 barcode generator library")
+    click.echo("Python extension for Code128 barcode generator library")
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
-.. Code128 library's python wrapper documentation master file.
+.. Code128 library's python extension documentation master file.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Code128 library's python wrapper's documentation!
+Welcome to Code128 library's python extension's documentation!
 ==========================================================================
 
 .. toctree::

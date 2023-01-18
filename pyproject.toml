@@ -2,7 +2,7 @@
     name = "pycode128"
     version = "0.0.0"
     homepage = "https://github.com/gpongelli/pycode128"
-    description = "Python wrapper for Code128 barcode generator library."
+    description = "Python extension for Code128 barcode generator library."
     authors = ["Gabriele Pongelli <gabriele.pongelli@gmail.com>"]
     readme = "README.md"
     license =  "MIT"
