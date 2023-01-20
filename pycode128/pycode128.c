@@ -68,18 +68,19 @@ static PyObject* code128_estimate_len(PyObject *self, PyObject *Py_UNUSED(ignore
     const char *data;
     size_t barcode_len = 0;
 
-    /* Parse argument, expected a const char *
-     *  ref  https://docs.python.org/3/c-api/arg.html
-     */
-    /* if(!PyArg_ParseTuple(args, "s", &data)) {
-        // PyArg_ParseTuple evaluate to false on failure
-        return NULL;
-    }*/
     if (self->input_data == NULL) {
         PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
         return NULL;
     }
-//////////////////////////
+
+    /* Parse argument, expected a const char *
+     *  ref  https://docs.python.org/3/c-api/arg.html
+     *  PyArg_ParseTuple converts PyObject to C type
+     */
+    if (!PyArg_ParseTuple(self->input_data, "s", &data)) {
+        // PyArg_ParseTuple evaluate to false on failure
+        return NULL;
+    }
 
     barcode_len = code128_estimate_len(data);
 
