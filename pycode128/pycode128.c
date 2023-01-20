@@ -275,12 +275,6 @@ PyCode128_get_encoded_data(PyCode128Object *self, void *closure)
     return self->encoded_data;
 }
 
-static PyObject *
-PyCode128_set_encoded_data(PyCode128Object *self, void *closure)
-{
-    PyErr_SetString(PyExc_ValueError, "Encoded data cannot be set.");
-    return -1;
-}
 
 static PyObject *
 PyCode128_get_length(PyCode128Object *self, void *closure)
@@ -289,17 +283,12 @@ PyCode128_get_length(PyCode128Object *self, void *closure)
     return self->length;
 }
 
-static PyObject *
-PyCode128_set_length(PyCode128Object *self, void *closure)
-{
-    PyErr_SetString(PyExc_ValueError, "Length cannot be set.");
-    return -1;
-}
 
 static PyGetSetDef PyCode128_getsetters[] = {
-    {"input_data",      (getter)PyCode128_get_input_data,   (setter)PyCode128_set_input_data},
-    {"encoded_data",    (getter)PyCode128_get_encoded_data, (setter)PyCode128_set_encoded_data},
-    {"length",          (getter)PyCode128_get_length,       (setter)PyCode128_set_length},
+    /*    name,                   get,                           set,                               doc,        closure  */
+    {"input_data",      (getter)PyCode128_get_input_data,   (setter)PyCode128_set_input_data,   input_data_doc },
+    {"encoded_data",    (getter)PyCode128_get_encoded_data, NULL},  // read-only
+    {"length",          (getter)PyCode128_get_length,       NULL},  // read-only
 };
 
 
