@@ -63,7 +63,7 @@ typedef struct {
 
 
 /* methods implementation */
-static PyObject* code128_estimate_len(PyObject *self, PyObject *Py_UNUSED(ignored))
+static PyObject* code128_estimate_len(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
 {
     const char *data;
     size_t barcode_len = 0;
@@ -88,7 +88,7 @@ static PyObject* code128_estimate_len(PyObject *self, PyObject *Py_UNUSED(ignore
 }
 
 
-static PyObject* code128_encode_gs1(PyObject *self, PyObject *Py_UNUSED(ignored))
+static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
 {
 /*  size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength) */
     const char *data;
@@ -118,7 +118,7 @@ static PyObject* code128_encode_gs1(PyObject *self, PyObject *Py_UNUSED(ignored)
 
 
 
-static PyObject* code128_encode_raw(PyObject *self, PyObject *Py_UNUSED(ignored))
+static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
 {
 /* size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength) */
     const char *data;
