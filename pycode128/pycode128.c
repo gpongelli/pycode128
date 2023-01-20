@@ -194,7 +194,7 @@ PyCode128_init(PyCode128Object *self, PyObject *args, PyObject *kw)
     PyObject *input_data = NULL, *tmp = NULL;
 
     if (!PyArg_ParseTupleAndKeywords(args, kw,
-                                    "|U", keywords,
+                                    "U", keywords,  // unicode string is not optional
                                     &input_data))
     {
         // https://docs.python.org/3/extending/newtypes_tutorial.html
