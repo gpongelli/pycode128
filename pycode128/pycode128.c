@@ -61,6 +61,7 @@ static PyObject* code128_estimate_len(PyCode128_Object *self, PyObject *Py_UNUSE
     const char *data;
     size_t barcode_len = 0;
 
+    /* check for input data */
     if (self->input_data == NULL) {
         PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
         return NULL;
@@ -77,7 +78,7 @@ static PyObject* code128_estimate_len(PyCode128_Object *self, PyObject *Py_UNUSE
 
     barcode_len = code128_estimate_len(data);
 
-    return PyLong_FromLong(barcode_len);
+    return PyLong_FromSsize_t(barcode_len);
 }
 
 
@@ -89,10 +90,17 @@ static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
 
+    /* check for input data */
+    if (self->input_data == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+        return NULL;
+    }
+
     /* Parse argument, expected a const char *
      *  ref  https://docs.python.org/3/c-api/arg.html
+     *  PyArg_ParseTuple converts PyObject to C type
      */
-    if(!PyArg_ParseTuple(args, "s", &data)) {
+    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -106,7 +114,13 @@ static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(
 
     barcode_len = code128_encode_gs1(data, &barcode_data[0], max_length);
 
-    return PyLong_FromLong(barcode_len);
+    // Py_BuildValue creates PyObject
+    self->encoded_data = Py_BuildValue("s", barcode_data);  // check if bytes object is better
+    self->length = Py_BuildValue("i", barcode_len);
+
+    free(barcode_data);
+
+    Py_RETURN_NONE;
 }
 
 
@@ -119,10 +133,17 @@ static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
 
+    /* check for input data */
+    if (self->input_data == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+        return NULL;
+    }
+
     /* Parse argument, expected a const char *
      *  ref  https://docs.python.org/3/c-api/arg.html
+     *  PyArg_ParseTuple converts PyObject to C type
      */
-    if(!PyArg_ParseTuple(args, "s", &data)) {
+    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -136,7 +157,13 @@ static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(
 
     barcode_len = code128_encode_raw(data, &barcode_data[0], max_length);
 
-    return PyLong_FromLong(barcode_len);
+    // Py_BuildValue creates PyObject
+    self->encoded_data = Py_BuildValue("s", barcode_data);  // check if bytes object is better
+    self->length = Py_BuildValue("i", barcode_len);
+
+    free(barcode_data);
+
+    Py_RETURN_NONE;
 }
 
 
