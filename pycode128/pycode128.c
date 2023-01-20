@@ -298,6 +298,31 @@ PyCode128_str(PyCode128Object * obj) {
 }
 
 
+static PyObject *
+PyCode128_richcompare(PyObject *obj1, PyObject *obj2, int op) {
+    PyObject *result;
+    int c;
+    PyObject *input_data1, *input_data2;
+
+    // check that input pyobject is PyCode128Object is missing
+
+    input_data1 = ((PyCode128Object *) obj1)->input_data;
+    input_data2 = ((PyCode128Object *) obj2)->input_data;
+
+    switch (op) {
+        case Py_LT: c = input_data1 <  input_data2; break;
+        case Py_LE: c = input_data1 <= input_data2; break;
+        case Py_EQ: c = input_data1 == input_data2; break;
+        case Py_NE: c = input_data1 != input_data2; break;
+        case Py_GT: c = input_data1 >  input_data2; break;
+        case Py_GE: c = input_data1 >= input_data2; break;
+    }
+    result = c ? Py_True : Py_False;
+    Py_INCREF(result);
+    return result;
+}
+
+
 PyDoc_STRVAR(pycode128_type_doc, "PyCode128 object");
 static PyTypeObject PyCode128Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -313,7 +338,8 @@ static PyTypeObject PyCode128Type = {
     .tp_getset = PyCode128_getsetters,
     .tp_members = PyCode128_members,
     .tp_methods = PyCode128_methods,
-    .tp_str = PyCode128_str
+    .tp_str = PyCode128_str,
+    .tp_richcompare = PyCode128_richcompare
 };
 
 
