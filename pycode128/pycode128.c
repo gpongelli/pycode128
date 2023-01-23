@@ -89,6 +89,7 @@ static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
 
     /* check for input data */
     if (self->input_data == NULL) {
@@ -115,10 +116,28 @@ static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(
     barcode_len = code128_encode_gs1(data, &barcode_data[0], max_length);
 
     // Py_BuildValue creates PyObject
-    self->encoded_data = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    self->length = Py_BuildValue("i", barcode_len);
-
+    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
     free(barcode_data);
+    if (pyobj_encoded != NULL) {
+        tmp_enc = self->encoded_data;
+        Py_INCREF(pyobj_encoded);
+        self->encoded_data = pyobj_encoded;
+        Py_XDECREF(tmp_enc);
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+
+    pyobj_length = Py_BuildValue("i", barcode_len);
+    if (pyobj_length != NULL) {
+        tmp_len = self->length;
+        Py_INCREF(pyobj_length);
+        self->length = pyobj_length;
+        Py_XDECREF(tmp_len);
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
 
     Py_RETURN_NONE;
 }
@@ -132,6 +151,7 @@ static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
 
     /* check for input data */
     if (self->input_data == NULL) {
@@ -158,10 +178,28 @@ static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(
     barcode_len = code128_encode_raw(data, &barcode_data[0], max_length);
 
     // Py_BuildValue creates PyObject
-    self->encoded_data = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    self->length = Py_BuildValue("i", barcode_len);
-
+    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
     free(barcode_data);
+    if (pyobj_encoded != NULL) {
+        tmp_enc = self->encoded_data;
+        Py_INCREF(pyobj_encoded);
+        self->encoded_data = pyobj_encoded;
+        Py_XDECREF(tmp_enc);
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+
+    pyobj_length = Py_BuildValue("i", barcode_len);
+    if (pyobj_length != NULL) {
+        tmp_len = self->length;
+        Py_INCREF(pyobj_length);
+        self->length = pyobj_length;
+        Py_XDECREF(tmp_len);
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
 
     Py_RETURN_NONE;
 }
