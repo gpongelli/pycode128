@@ -6,6 +6,8 @@
     authors = ["Gabriele Pongelli <gabriele.pongelli@gmail.com>"]
     readme = "README.md"
     license =  "MIT"
+    build="build.py"
+
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -20,10 +22,6 @@
         { include = "tests", format = "sdist" },
         { include = "libs", format = "sdist" },
     ]
-
-    [tool.poetry.build]
-        generate-setup-file = false
-        script = "build.py"
 
     [tool.poetry.dependencies]
         python = ">=3.8.0,<4.0"
