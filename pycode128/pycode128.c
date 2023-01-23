@@ -363,7 +363,7 @@ PyCode128_str(PyCode128Object * obj) {
 static PyObject *
 PyCode128_richcompare(PyObject *obj1, PyObject *obj2, int op) {
     PyObject *result;
-    int c;
+    int c = 0;
     PyObject *input_data1, *input_data2;
 
     // check that input pyobject is PyCode128Object is missing
