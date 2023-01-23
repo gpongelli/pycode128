@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+//
+// SPDX-License-Identifier: MIT
+
 // reference https://github.com/FirefoxMetzger/mini-extension
 // reference https://realpython.com/build-python-c-extension-module/
 // reference https://www.pythonsheets.com/notes/python-c-extensions.html

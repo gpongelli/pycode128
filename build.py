@@ -1,11 +1,14 @@
-from setuptools.extension import Extension
-from setuptools.command.develop import develop
-from os.path import splitext
-from os.path import relpath
+# SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+#
+# SPDX-License-Identifier: MIT
+
 import os
 import platform
 from glob import glob
-from os.path import join
+from os.path import join, relpath, splitext
+
+from setuptools.command.develop import develop
+from setuptools.extension import Extension
 
 # arch information comes from
 # gcc -v

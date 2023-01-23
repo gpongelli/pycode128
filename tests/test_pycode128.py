@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for `pycode128` package."""
 
 import pytest

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+#
+# SPDX-License-Identifier: MIT
+
 """Top-level package for Code128 library's python extension."""
 
 __author__ = "Gabriele Pongelli"

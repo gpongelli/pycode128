@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+
+SPDX-License-Identifier: MIT
+-->
+
 * Code128 library's python extension version:
 * Python version:
 * Operating System:
