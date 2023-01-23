@@ -18,6 +18,7 @@
     packages = [
         { include = "pycode128" },
         { include = "tests", format = "sdist" },
+        { include = "libs", format = "sdist" },
     ]
 
     [tool.poetry.build]
