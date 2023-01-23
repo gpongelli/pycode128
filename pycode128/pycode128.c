@@ -56,7 +56,7 @@ typedef struct {
 
 
 /* methods implementation */
-static PyObject* code128_estimate_len(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
     const char *data;
     size_t barcode_len = 0;
@@ -82,7 +82,7 @@ static PyObject* code128_estimate_len(PyCode128_Object *self, PyObject *Py_UNUSE
 }
 
 
-static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /*  size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength) */
     const char *data;
@@ -144,7 +144,7 @@ static PyObject* code128_encode_gs1(PyCode128_Object *self, PyObject *Py_UNUSED(
 
 
 
-static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /* size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength) */
     const char *data;
@@ -206,17 +206,17 @@ static PyObject* code128_encode_raw(PyCode128_Object *self, PyObject *Py_UNUSED(
 
 
 
-PyDoc_STRVAR(code128_estimate_len_doc,  "Returns label's estimated length.");
-PyDoc_STRVAR(code128_encode_gs1_doc,    "Encode the GS1 string.\nReturns the length of barcode data in bytes");
-PyDoc_STRVAR(code128_encode_raw_doc,    "Encode raw string.\nReturns the length of barcode data in bytes");
+PyDoc_STRVAR(estimate_len_doc,  "Returns label's estimated length.");
+PyDoc_STRVAR(encode_gs1_doc,    "Encode the GS1 string.\nReturns the length of barcode data in bytes");
+PyDoc_STRVAR(encode_raw_doc,    "Encode raw string.\nReturns the length of barcode data in bytes");
 
 /* methods definition */
 // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
 static PyMethodDef PyCode128_methods[] = {
-    /*  ml_name,                       ml_meth,              ml_flags,         ml_doc           */
-    {"estimate_len",    (PyCFunction)code128_estimate_len,   METH_NOARGS,   code128_estimate_len_doc},
-    {"encode_gs1",      (PyCFunction)code128_encode_gs1,     METH_NOARGS,   code128_encode_gs1_doc},
-    {"encode_raw",      (PyCFunction)code128_encode_raw,     METH_NOARGS,   code128_encode_raw_doc},
+    /*  ml_name,                ml_meth,              ml_flags,         ml_doc           */
+    {"estimate_len",    (PyCFunction)estimate_len,   METH_NOARGS,   estimate_len_doc},
+    {"encode_gs1",      (PyCFunction)encode_gs1,     METH_NOARGS,   encode_gs1_doc},
+    {"encode_raw",      (PyCFunction)encode_raw,     METH_NOARGS,   encode_raw_doc},
     {NULL}  /* Sentinel */
 };
 
