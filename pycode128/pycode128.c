@@ -355,8 +355,8 @@ static PyGetSetDef PyCode128_getsetters[] = {
 
 
 static PyObject *
-PyCode128_str(PyCode128Object * obj) {
-    return PyUnicode_FromFormat("PyCode128 instance for %s ", obj->input_data);
+PyCode128_str(PyObject * obj) {
+    return PyUnicode_FromFormat("PyCode128 instance");
 }
 
 
