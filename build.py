@@ -3,17 +3,31 @@ from setuptools.command.develop import develop
 from os.path import splitext
 from os.path import relpath
 import os
+import platform
 from glob import glob
 from os.path import join
 
+# arch information comes from
+# gcc -v
+# gcc -dumpmachine
+
+_is_windows = 'Windows' in platform.system()
+_arch = 'x86-64'
+if _is_windows:
+    _lflags = f"-Wl,--subsystem,windows,--out-implib,libcode128_{_arch}.a"
+else:
+    _lflags = "-Wl,-soname,libcode128.so"
+    if 'arm' in platform.machine():
+        _arch = "armv7"
 
 # list of tuples (python_module, dict of C/C++ library build data ),
 #   python_module is the extension that uses those C/C++ library info.
 # the dict can be extended with all the kwargs needed by Extension to correctly build C/C++ sourcecode
 _LIBS = [('pycode128', {"libs": ['libs/code128'],
                         # Building library part
-                        "lib_cflags": ["-O2", "-std=c99", "-Wall", "-fpic", "-Wextra", "-march=x86-64", "-DADD_EXPORTS"],
-                        "lib_lflags": ["-shared", "-s", "-Wl,--subsystem,windows,--out-implib,libcode128_x86-64.a"],
+                        "lib_cflags": ["-O2", "-std=c99", "-Wall", "-fpic", "-Wextra", f"-march={_arch}",
+                                       "-DADD_EXPORTS"],
+                        "lib_lflags": ["-shared", _lflags],
 
                         # Python extension part
                         # always define PY_SSIZE_T_CLEAN , see https://docs.python.org/3/extending/extending.html
