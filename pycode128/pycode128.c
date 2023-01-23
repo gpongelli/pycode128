@@ -32,9 +32,9 @@ class PyCode128:
         self.input_data = input_data
 
     def encode_gs1():
-        get char*
+        do barcode and save encoded_data and length
     def encode_raw():
-        get char*
+        do barcode and save encoded_data and length
     def estimate_len():
         get estimated len
 
@@ -213,10 +213,10 @@ PyDoc_STRVAR(code128_encode_raw_doc,    "Encode raw string.\nReturns the length 
 /* methods definition */
 // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
 static PyMethodDef PyCode128_methods[] = {
-    /*  ml_name,                                 ml_meth,              ml_flags,         ml_doc           */
-    {"code128_estimate_len",    (PyCFunction)code128_estimate_len,   METH_NOARGS,   code128_estimate_len_doc},
-    {"code128_encode_gs1",      (PyCFunction)code128_encode_gs1,     METH_NOARGS,   code128_encode_gs1_doc},
-    {"code128_encode_raw_doc",  (PyCFunction)code128_encode_raw,     METH_NOARGS,   code128_encode_raw_doc},
+    /*  ml_name,                       ml_meth,              ml_flags,         ml_doc           */
+    {"estimate_len",    (PyCFunction)code128_estimate_len,   METH_NOARGS,   code128_estimate_len_doc},
+    {"encode_gs1",      (PyCFunction)code128_encode_gs1,     METH_NOARGS,   code128_encode_gs1_doc},
+    {"encode_raw",      (PyCFunction)code128_encode_raw,     METH_NOARGS,   code128_encode_raw_doc},
     {NULL}  /* Sentinel */
 };
 
@@ -285,7 +285,6 @@ PyCode128_dealloc(PyCode128Object *self)
 
 
 // https://docs.python.org/3/c-api/structures.html#c.PyMemberDef
-PyDoc_STRVAR(input_data_doc, "Input string to be converted in Code128.");
 static PyMemberDef PyCode128_members[] = {
      /* name        type                  offset                      flags          doc  */
     /* {"input_data", T_STRING, offsetof(PyCode128Object, input_data),  READONLY,   input_data_doc}, */
@@ -343,6 +342,7 @@ PyCode128_get_length(PyCode128Object *self, void *closure)
 }
 
 
+PyDoc_STRVAR(input_data_doc, "Input string to be converted in Code128.");
 static PyGetSetDef PyCode128_getsetters[] = {
     /*    name,                   get,                           set,                               doc,        closure  */
     {"input_data",      (getter)PyCode128_get_input_data,   (setter)PyCode128_set_input_data,   input_data_doc },
