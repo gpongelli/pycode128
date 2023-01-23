@@ -49,7 +49,8 @@ class PyCode128:
 */
 
 typedef struct {
-    PyObject_HEAD,
+    PyObject_HEAD
+
     PyObject *input_data;
     PyObject *encoded_data;
     PyObject *length;
