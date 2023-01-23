@@ -5,7 +5,6 @@ from os.path import relpath
 import os
 from glob import glob
 from os.path import join
-from os.path import dirname
 
 
 # list of tuples (python_module, dict of C/C++ library build data ),
@@ -94,41 +93,41 @@ def build(setup_kwargs):
         }
     )
 
-
-if __name__ == '__main__':
-    # _LIBS = [('py', 'libs/code128')]
-
-    for _py_lib, _source_libs in _LIBS:
-        for _source_folder in _source_libs['libs']:
-            for root, _, _ in os.walk(os.sep.join([_source_folder])):
-                print(root)
-                for path in glob(join(root, '*.c')):
-                    print(path)
-                    print(dirname(path))
-
-    _a = [_unix_form(path)
-          for _py_lib, _source_lib in _LIBS
-          for source_fold in _source_lib['libs']
-          for root, _, _ in os.walk(os.sep.join([source_fold]))
-          for path in glob(join(root, '*.c'))
-          if 'code128png' not in path]
-
-    for _py_lib, _ in _LIBS:
-        for root, _, _ in os.walk(os.sep.join([_py_lib])):
-            print(root)
-            for path in glob(join(root, '*.c')):
-                print(path)
-                print(dirname(path))
-                print(splitext(relpath(path, start='.').replace(os.sep, '.'))[0])
-
-    ext = [Extension(splitext(relpath(_unix_form(path), start='.').replace(os.sep, '.'))[0],
-                     sources=[_unix_form(path)],
-                     define_macros=_source_libs['define_macros'],
-                     include_dirs=_source_libs['libs'])
-           for _py_lib, _source_libs in _LIBS
-           for root, _, _ in os.walk(os.sep.join([_py_lib]))
-           for path in glob(join(root, '*.c'))
-           ]
-    print(ext)
-
-
+#
+# if __name__ == '__main__':
+#     # _LIBS = [('py', 'libs/code128')]
+#
+#     for _py_lib, _source_libs in _LIBS:
+#         for _source_folder in _source_libs['libs']:
+#             for root, _, _ in os.walk(os.sep.join([_source_folder])):
+#                 print(root)
+#                 for path in glob(join(root, '*.c')):
+#                     print(path)
+#                     print(dirname(path))
+#
+#     _a = [_unix_form(path)
+#           for _py_lib, _source_lib in _LIBS
+#           for source_fold in _source_lib['libs']
+#           for root, _, _ in os.walk(os.sep.join([source_fold]))
+#           for path in glob(join(root, '*.c'))
+#           if 'code128png' not in path]
+#
+#     for _py_lib, _ in _LIBS:
+#         for root, _, _ in os.walk(os.sep.join([_py_lib])):
+#             print(root)
+#             for path in glob(join(root, '*.c')):
+#                 print(path)
+#                 print(dirname(path))
+#                 print(splitext(relpath(path, start='.').replace(os.sep, '.'))[0])
+#
+#     ext = [Extension(splitext(relpath(_unix_form(path), start='.').replace(os.sep, '.'))[0],
+#                      sources=[_unix_form(path)],
+#                      define_macros=_source_libs['define_macros'],
+#                      include_dirs=_source_libs['libs'])
+#            for _py_lib, _source_libs in _LIBS
+#            for root, _, _ in os.walk(os.sep.join([_py_lib]))
+#            for path in glob(join(root, '*.c'))
+#            ]
+#     print(ext)
+#
+#
