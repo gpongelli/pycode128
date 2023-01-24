@@ -5,6 +5,7 @@
 """Console script for pycode128."""
 
 import click
+
 from pycode128 import __version__
 
 
