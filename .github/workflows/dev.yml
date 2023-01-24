@@ -51,15 +51,15 @@ jobs:
       #    pip install poetry tox tox-gh-actions
 
       - name: build documentation
-        run: poetry run tox -e docs
+        run: poetry run tox --skip-install --direct-yolo -e docs
 
       - name: linter checks with tox
         run:
-          poetry run tox -e lint
+          poetry run tox --skip-install --direct-yolo -e lint
 
       - name: test with tox
         run:
-          poetry run tox -e py${{ matrix.python-versions }}
+          poetry run tox --skip-install --direct-yolo -e py${{ matrix.python-versions }}
 
       - name: list files
         run: ls -l .

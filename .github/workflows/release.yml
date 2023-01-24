@@ -64,19 +64,12 @@ jobs:
         uses: actions/configure-pages@v2
 
       - name: build documentation
-        run: poetry run tox -e docs
+        run: poetry run tox --skip-install --direct-yolo -e docs
 
-      {%- if 'mkdocs' in cookiecutter.doc_generator|lower %}
-      - name: Upload mdocs doc artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: './public'
-      {%- else %}
       - name: Upload Sphinx doc artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './docs/build/html'
-      {%- endif %}
 
       - name: Deploy to GitHub Pages
         id: deployment

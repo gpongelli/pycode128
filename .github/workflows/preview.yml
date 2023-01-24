@@ -45,7 +45,7 @@ jobs:
 
       - name: test with tox
         run:
-          poetry run tox -e py${{ matrix.python-versions }}
+          poetry run tox --skip-install --direct-yolo -e py${{ matrix.python-versions }}
 
       - name: Build wheels and source tarball
         run: |
