@@ -10,7 +10,7 @@
     authors = ["Gabriele Pongelli <gabriele.pongelli@gmail.com>"]
     readme = "README.md"
     license =  "MIT"
-    build="build.py"
+    build = "build.py"
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -65,6 +65,9 @@
             types-setuptools = "^65.3.0"
             reuse = "^1.1.0"
             setuptools = "^65.6.3"
+            wheel = "^0.38.4"
+            tox-direct = "^0.4"
+            cibuildwheel = "^2.12.0"
 
 
     [tool.poetry.scripts]

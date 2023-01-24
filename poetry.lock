@@ -105,6 +105,18 @@ toml = ["toml"]
 yaml = ["PyYAML"]
 
 [[package]]
+name = "bashlex"
+version = "0.18"
+description = "Python parser for bash"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0, !=3.1, !=3.2, !=3.3, !=3.4"
+files = [
+    {file = "bashlex-0.18-py2.py3-none-any.whl", hash = "sha256:91d73a23a3e51711919c1c899083890cdecffc91d8c088942725ac13e9dcfffa"},
+    {file = "bashlex-0.18.tar.gz", hash = "sha256:5bb03a01c6d5676338c36fd1028009c8ad07e7d61d8a1ce3f513b7fff52796ee"},
+]
+
+[[package]]
 name = "binaryornot"
 version = "0.4.4"
 description = "Ultra-lightweight pure Python package to check if a file is binary or text."
@@ -185,6 +197,18 @@ python-versions = "*"
 files = [
     {file = "boolean.py-4.0-py3-none-any.whl", hash = "sha256:2876f2051d7d6394a531d82dc6eb407faa0b01a0a0b3083817ccd7323b8d96bd"},
     {file = "boolean.py-4.0.tar.gz", hash = "sha256:17b9a181630e43dde1851d42bef546d616d5d9b4480357514597e78b203d06e4"},
+]
+
+[[package]]
+name = "bracex"
+version = "2.3.post1"
+description = "Bash style brace expander."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "bracex-2.3.post1-py3-none-any.whl", hash = "sha256:351b7f20d56fb9ea91f9b9e9e7664db466eb234188c175fd943f8f755c807e73"},
+    {file = "bracex-2.3.post1.tar.gz", hash = "sha256:e7b23fc8b2cd06d3dec0692baabecb249dda94e06a617901ff03a6c56fd71693"},
 ]
 
 [[package]]
@@ -314,6 +338,35 @@ files = [
 
 [package.extras]
 unicode-backport = ["unicodedata2"]
+
+[[package]]
+name = "cibuildwheel"
+version = "2.12.0"
+description = "Build Python wheels on CI with minimal configuration."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "cibuildwheel-2.12.0-py3-none-any.whl", hash = "sha256:3d75d58f8e9909f2c9fe4923d03682e9ae27a45d38deba2a76b757114bdcf361"},
+    {file = "cibuildwheel-2.12.0.tar.gz", hash = "sha256:510b13a5cc8d854a82c1a6fa819c874b1f6a3064b90e31fda7b7a649bc8e80af"},
+]
+
+[package.dependencies]
+bashlex = "!=0.13"
+bracex = "*"
+certifi = "*"
+filelock = "*"
+packaging = ">=20.9"
+platformdirs = "*"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+typing-extensions = {version = ">=4.1.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+bin = ["click", "packaging (>=21.0)", "pip-tools", "pygithub", "pyyaml", "requests", "rich (>=9.6)"]
+dev = ["build", "click", "jinja2", "mypy (>=0.901)", "packaging (>=21.0)", "pip-tools", "pygithub", "pytest (>=6)", "pytest-timeout", "pytest-xdist", "pyyaml", "requests", "rich (>=9.6)", "tomli-w", "types-certifi", "types-click", "types-jinja2", "types-pyyaml", "types-requests", "types-toml"]
+docs = ["jinja2 (>=3.1.2)", "mkdocs (==1.3.1)", "mkdocs-include-markdown-plugin (==2.8.0)", "mkdocs-macros-plugin", "pymdown-extensions"]
+mypy = ["mypy (>=0.901)", "types-certifi", "types-click", "types-jinja2", "types-pyyaml", "types-requests", "types-toml"]
+test = ["build", "jinja2", "pytest (>=6)", "pytest-timeout", "pytest-xdist", "tomli-w"]
 
 [[package]]
 name = "click"
@@ -1088,6 +1141,21 @@ files = [
     {file = "packaging-22.0-py3-none-any.whl", hash = "sha256:957e2148ba0e1a3b282772e791ef1d8083648bc131c8ab0c1feba110ce1146c3"},
     {file = "packaging-22.0.tar.gz", hash = "sha256:2198ec20bd4c017b8f9717e00f0c8714076fc2fd93816750ab48e2c41de2cfd3"},
 ]
+
+[[package]]
+name = "pathlib2"
+version = "2.3.7.post1"
+description = "Object-oriented filesystem paths"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pathlib2-2.3.7.post1-py2.py3-none-any.whl", hash = "sha256:5266a0fd000452f1b3467d782f079a4343c63aaa119221fbdc4e39577489ca5b"},
+    {file = "pathlib2-2.3.7.post1.tar.gz", hash = "sha256:9fe0edad898b83c0c3e199c842b27ed216645d2e177757b2dd67384d4113c641"},
+]
+
+[package.dependencies]
+six = "*"
 
 [[package]]
 name = "pathspec"
@@ -1931,6 +1999,27 @@ docs = ["pygments-github-lexers (>=0.0.5)", "sphinx (>=2.0.0)", "sphinxcontrib-a
 testing = ["flaky (>=3.4.0)", "freezegun (>=0.3.11)", "pathlib2 (>=2.3.3)", "psutil (>=5.6.1)", "pytest (>=4.0.0)", "pytest-cov (>=2.5.1)", "pytest-mock (>=1.10.0)", "pytest-randomly (>=1.0.0)"]
 
 [[package]]
+name = "tox-direct"
+version = "0.4"
+description = "plugin for tox - run everything directly (tox creates no virtual env)"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "tox-direct-0.4.tar.gz", hash = "sha256:33bb6627db50c1c1760f889410bf77107e4858cf15a0f4532442fd690b6284c8"},
+    {file = "tox_direct-0.4-py2.py3-none-any.whl", hash = "sha256:d80968dfbaf99198d7fa77fb2c20786f6bcf584000be96217a4ffd74dd4b3699"},
+]
+
+[package.dependencies]
+pathlib2 = "*"
+py = "*"
+tox = ">=3.12,<4"
+
+[package.extras]
+publish = ["twine"]
+test = ["pytest"]
+
+[[package]]
 name = "tqdm"
 version = "4.64.1"
 description = "Fast, Extensible Progress Meter"
@@ -2074,6 +2163,21 @@ files = [
 ]
 
 [[package]]
+name = "wheel"
+version = "0.38.4"
+description = "A built-package format for Python"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "wheel-0.38.4-py3-none-any.whl", hash = "sha256:b60533f3f5d530e971d6737ca6d58681ee434818fab630c83a734bb10c083ce8"},
+    {file = "wheel-0.38.4.tar.gz", hash = "sha256:965f5259b566725405b05e7cf774052044b1ed30119b5d586b2703aafe8719ac"},
+]
+
+[package.extras]
+test = ["pytest (>=3.0.0)"]
+
+[[package]]
 name = "wrapt"
 version = "1.14.1"
 description = "Module for decorators, wrappers and monkey patching."
@@ -2182,4 +2286,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
         python-versions = ">=3.8.0,<4.0"
-content-hash = "b8f94922d40a2f8d7f7e787c5d8caca37ec4e8240e920c6f15c3e9915784b071"
+content-hash = "122247eed0aabce03c96cf867fe8733c6d3fd073218eb6ba26ca42fa4732af5e"
