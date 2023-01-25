@@ -5,6 +5,7 @@
 // reference https://github.com/FirefoxMetzger/mini-extension
 // reference https://realpython.com/build-python-c-extension-module/
 // reference https://www.pythonsheets.com/notes/python-c-extensions.html
+// ref       https://pysheeet.readthedocs.io/en/latest/notes/python-c-extensions.html
 
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN

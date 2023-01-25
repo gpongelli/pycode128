@@ -16,6 +16,8 @@ from setuptools.extension import Extension
 # gcc -v
 # gcc -dumpmachine
 
+# info https://stackoverflow.com/questions/6928110/how-may-i-override-the-compiler-gcc-flags-that-setup-py-uses-by-default
+
 _is_windows = 'Windows' in platform.system()  # pylint: disable=C0103
 _arch = 'x86-64'  # pylint: disable=C0103
 if _is_windows:
