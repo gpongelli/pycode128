@@ -21,7 +21,7 @@ on:
 jobs:
   # This workflow contains a single job called "test"
   test:
-    name: Build on ${{ matrix.os }} - py${{ matrix.python-versions }} - poetry ${{ poetry-version }}
+    name: Build on ${{ matrix.os }} - py${{ matrix.python-versions }} - poetry ${{ matrix.poetry-version }}
     # The type of runner that the job will run on
     strategy:
       matrix:
