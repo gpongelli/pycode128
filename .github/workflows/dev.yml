@@ -73,6 +73,8 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64 i686 arm64 arm/v7
           CIBW_ARCHS_MACOS: x86_64
           CIBW_ARCHS_WINDOWS: AMD64
+          CIBW_BUILD_VERBOSITY: '3'
+          CIBW_BUILD_FRONTEND: 'build'
 
       - name: show temporary files
         run: |
