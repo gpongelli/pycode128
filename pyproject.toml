@@ -18,8 +18,10 @@
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ]
     packages = [
         { include = "pycode128" },
@@ -184,3 +186,37 @@ max-line-length=120
 [build-system]
     requires = ["setuptools", "poetry-core>=1.0.0"]
     build-backend = "poetry.core.masonry.api"
+
+
+[tool.cibuildwheel]
+    build-frontend = "pip"
+    build-verbosity = 3
+
+    test-requires = ["poetry", "tox", "pytest"]
+    test-command = [
+        # takes tox & pytest configs from setup.cfg
+        # change to project dir where pyproject.toml exists
+        "cd {project}",
+        'poetry run tox --skip-pkg-install --direct-yolo -e py3.10'
+    ]
+
+    # Skip CPython 3.6 and CPython 3.7 , Disable building PyPy wheels on all platforms
+    skip = ["cp36-*", "cp37-*", "pp*"]
+    build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+
+    # configure cibuildwheel to build native archs ('auto'), and some emulated ones
+    # https://cibuildwheel.readthedocs.io/en/stable/faq/#emulation
+    # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
+    # https://github.com/pypa/cibuildwheel/blob/main/examples/github-with-qemu.yml
+    [tool.cibuildwheel.windows]
+        archs = ["AMD64"]
+    [tool.cibuildwheel.macos]
+        archs = ["x86_64"]
+    [tool.cibuildwheel.linux]
+        archs = ["x86_64", "i686", "arm64", "arm/v7", "aarch64"]
+        # Build using the manylinux2014 image
+        manylinux-x86_64-image = "manylinux2014"
+        manylinux-i686-image = "manylinux2014"
+        manylinux-aarch64-image = "manylinux2014"
+        manylinux-pypy_x86_64-image = "manylinux2014"
+        manylinux-pypy_i686-image = "manylinux2014"
