@@ -42,25 +42,24 @@ jobs:
         with:
           submodules: 'recursive'
 
-      # https://github.com/BinPar/read-conventional-commit-changelog
-      - name: Get Changelog Entry
-        id: changelog
-        uses: BinPar/read-conventional-commit-changelog@v2.0.2
-
-      # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#caching-packages
-      - name: Install Poetry
-        run: pipx install poetry==${{ matrix.poetry-version }}
-
       # https://github.com/actions/setup-python
       - uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-versions }}
-          cache: 'poetry'
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          poetry install --with devel --sync
+
+      # https://github.com/BinPar/read-conventional-commit-changelog
+      - name: Get Changelog Entry
+        id: changelog
+        uses: BinPar/read-conventional-commit-changelog@v2.0.2
 
       - name: Set up QEMU
         if: runner.os == 'Linux'
@@ -68,16 +67,11 @@ jobs:
         with:
           platforms: all
 
+      # no test command, done in dev workflow
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
-        env:
-          # configure cibuildwheel to build native archs ('auto'), and some emulated ones
-          # https://cibuildwheel.readthedocs.io/en/stable/faq/#emulation
-          # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
-          # https://github.com/pypa/cibuildwheel/blob/main/examples/github-with-qemu.yml
-          CIBW_ARCHS_LINUX: x86_64 i686 arm64 arm/v7
-          CIBW_ARCHS_MACOS: x86_64
-          CIBW_ARCHS_WINDOWS: AMD64
+        with:
+          CIBW_TEST_COMMAND: ""
 
       - name: show temporary files
         run: |
@@ -106,10 +100,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
 
-      - name: Build wheels and source tarball
-        run: >-
-          poetry build
-
       # https://github.com/softprops/action-gh-release
       - name: create github release
         id: create_release
@@ -117,16 +107,9 @@ jobs:
         with:
           token: ${{ secrets.make_gh_release_token }}
           body: ${{ steps.changelog.outputs.version-changelog }}
-          files: dist/*.whl
+          files: wheelhouse/*.whl
           draft: false
           prerelease: false
-
-      - uses: actions/download-artifact@v3
-        with:
-          # unpacks default artifact into dist/
-          # if `name: artifact` is omitted, the action will create extra parent dir
-          name: artifact
-          path: dist
 
       # https://github.com/pypa/gh-action-pypi-publish
       - name: publish to PyPI
