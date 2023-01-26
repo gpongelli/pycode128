@@ -419,7 +419,7 @@ PyDoc_STRVAR(module_doc, "Extension for code128 library");
 /* module definition */
 static struct PyModuleDef pycode128_module = {
     PyModuleDef_HEAD_INIT,
-    "pycode128",            /* m_name */   // "pycode128.pycode128" o solo "pycode128"
+    "pycode128.pycode128",  /* m_name */
     module_doc,             /* m_doc */
     -1,                     /* m_size */
     NULL,                   /* m_methods */  // no module function, but a class
