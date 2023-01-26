@@ -10,6 +10,7 @@ import pytest
 from click.testing import CliRunner
 
 from pycode128.cli_tools import cli
+from pycode128.pycode128 import PyCode128
 
 
 @pytest.fixture
@@ -20,6 +21,12 @@ def response():
     """
     # import requests
     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+
+
+def test_object_creation():
+    _code128 = PyCode128('test')
+    assert _code128.input_data == 'test'
+    assert _code128.__doc__ == "PyCode128 object"
 
 
 def test_content(response):
