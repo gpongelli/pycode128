@@ -120,7 +120,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.12.0
         env:
           CIBW_BUILD: ${{ steps.set_cibuildwheel_build.outputs.cibw_build_version }}
-          CIBW_TEST_COMMAND: >
+          CIBW_TEST_COMMAND: |
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-versions }}
 
@@ -130,7 +130,7 @@ jobs:
           ls -l ./wheelhouse/*
 
       # https://github.com/actions/upload-artifact
-      # make artifacts available through jobs
+      # make artifacts available through jobs and into action's webpage
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
