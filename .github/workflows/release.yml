@@ -82,7 +82,7 @@ jobs:
       - name: show temporary files
         run: |
           ls -l .
-          ls -l ./wheelhouse/*
+          ls -l wheelhouse
 
       # https://github.com/actions/upload-artifact
       # make artifacts available through jobs and into action's webpage
