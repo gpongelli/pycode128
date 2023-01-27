@@ -41,7 +41,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-versions }}
 
-      - name: Run image
+      - name: Setup Poetry
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
@@ -90,7 +90,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-versions }}
 
-      - name: Run image
+      - name: Setup Poetry
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
@@ -108,7 +108,7 @@ jobs:
       # configuration is inside pyproject.toml
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
-        with:
+        env:
           CIBW_TEST_COMMAND: >
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-versions }}
