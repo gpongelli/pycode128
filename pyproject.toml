@@ -213,7 +213,7 @@ max-line-length=120
     [tool.cibuildwheel.macos]
         archs = ["x86_64"]
     [tool.cibuildwheel.linux]
-        archs = ["x86_64", "i686", "arm64", "arm/v7", "aarch64"]
+        archs = ["x86_64", "i686", "arm64", "linux/arm/v7", "aarch64"]
         # Build using the manylinux2014 image
         manylinux-x86_64-image = "manylinux2014"
         manylinux-i686-image = "manylinux2014"
