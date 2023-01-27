@@ -78,6 +78,9 @@ jobs:
         os: [ windows-latest ]
     runs-on: ${{ matrix.os }}
 
+    outputs:
+      cibw_build_version: ""
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -105,10 +108,18 @@ jobs:
         with:
           platforms: all
 
+      - name: Setting python version for cibuildwheel
+        uses: actions/github-script@v6
+        id: set_cibuildwheel_build
+        with:
+          script: |
+            core.setOutput('cibw_build_version', 'cp' + '${{ matrix.python-versions }}'.replaceAll(/[/.]/g, '').trim('-') + '-*');
+
       # configuration is inside pyproject.toml
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
         env:
+          CIBW_BUILD: ${{ steps.set_cibuildwheel_build.outputs.cibw_build_version }}
           CIBW_TEST_COMMAND: >
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-versions }}
