@@ -29,6 +29,17 @@ def test_object_creation():
     assert _code128.input_data == 'test'
     assert _code128.__doc__ == "PyCode128 object"
 
+    _dir_code128 = dir(_code128)
+    # methods
+    assert 'encode_gs1' in _dir_code128
+    assert 'encode_raw' in _dir_code128
+    assert 'estimate_len' in _dir_code128
+
+    # properties
+    assert 'encoded_data' in _dir_code128
+    assert 'input_data' in _dir_code128
+    assert 'length' in _dir_code128
+
 
 def test_content(response):
     """Sample pytest test function with the pytest fixture as an argument.
