@@ -24,6 +24,7 @@ def response():
 
 
 def test_object_creation():
+    """Test PyCode128 object creation."""
     _code128 = PyCode128('test')
     assert _code128.input_data == 'test'
     assert _code128.__doc__ == "PyCode128 object"
