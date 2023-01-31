@@ -40,6 +40,8 @@ else:
     _lflags = "-Wl,-soname,libcode128.so"  # pylint: disable=C0103
     if 'arm' in platform.machine():
         _arch = "armv7"  # pylint: disable=C0103
+    elif 'aarch64' in platform.machine():
+        _arch = "armv8.8-a"  # pylint: disable=C0103
 
 # list of tuples (python_module, dict of C/C++ library build data ),
 #   python_module is the extension that uses those C/C++ library info.
