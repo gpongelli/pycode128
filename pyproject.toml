@@ -192,7 +192,7 @@ max-line-length=120
     build-frontend = "pip"
     build-verbosity = 3
 
-    test-requires = ["poetry", "tox", "pytest"]
+    test-requires = ["poetry", "tox", "pytest", "tox-direct"]
     test-command = [
         # takes tox & pytest configs from setup.cfg
         # change to project dir where pyproject.toml exists
