@@ -222,4 +222,5 @@ max-line-length=120
         manylinux-i686-image = "manylinux_2_28"
         manylinux-aarch64-image = "manylinux_2_28"
         repair-wheel-command = ""
-        environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1" }
+        # https://stackoverflow.com/questions/47968578/python3-utf-8-decode-issue
+        environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1", PYTHONIOENCODING="utf8" }
