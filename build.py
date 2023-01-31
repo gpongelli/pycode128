@@ -4,6 +4,7 @@
 
 """Module to build C/C++ extension with Poetry."""
 
+import configparser
 import os
 import platform
 from glob import glob
@@ -19,11 +20,16 @@ from setuptools.extension import Extension
 # info
 #  https://stackoverflow.com/questions/6928110/how-may-i-override-the-compiler-gcc-flags-that-setup-py-uses-by-default
 
-_is_windows = 'Windows' in platform.system()  # pylint: disable=C0103
+_platform = platform.system().lower()
+_is_windows = 'windows' in _platform  # pylint: disable=C0103
 _arch = 'x86-64'  # pylint: disable=C0103
+_c_compiler = ""
 if _is_windows:
     _lflags = f"-Wl,--subsystem,windows,--out-implib,libcode128_{_arch}.a"
+    _c_compiler = "mingw32"
 else:
+    # if "linux" in _platform:
+    _c_compiler = "unix"
     _lflags = "-Wl,-soname,libcode128.so"  # pylint: disable=C0103
     if 'arm' in platform.machine():
         _arch = "armv7"  # pylint: disable=C0103
@@ -84,6 +90,31 @@ class CustomDevelop(develop):
 # )
 
 
+def add_compiler_to_setup_cfg(_compiler):
+    conf = configparser.ConfigParser(inline_comment_prefixes="#")
+
+    with open('setup.cfg') as fp:
+        try:
+            conf.read_file(fp)
+        except configparser.Error:
+            pass
+
+    try:
+        conf.set('build_clib', 'compiler', _compiler)
+    except configparser.NoSectionError:
+        conf.add_section('build_clib')
+        conf.set('build_clib', 'compiler', _compiler)
+
+    try:
+        conf.set('build_ext', 'compiler', _compiler)
+    except configparser.NoSectionError:
+        conf.add_section('build_ext')
+        conf.set('build_ext', 'compiler', _compiler)
+
+    with open('setup.cfg', mode='w') as fp:
+        conf.write(fp, space_around_delimiters=True)
+
+
 # setuptools.extension requires unix separator
 def _unix_form(file_path: str) -> str:
     return file_path.replace('\\', '/')
@@ -93,6 +124,8 @@ def build(setup_kwargs):
     """
     This is a callback for poetry used to hook in our extensions.
     """
+
+    add_compiler_to_setup_cfg(_c_compiler)
 
     setup_kwargs.update(
         {
