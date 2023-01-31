@@ -23,13 +23,13 @@ from setuptools.extension import Extension
 _platform = platform.system().lower()
 _is_windows = 'windows' in _platform  # pylint: disable=C0103
 _arch = 'x86-64'  # pylint: disable=C0103
-_c_compiler = ""
+_c_compiler = ""  # pylint: disable=C0103
 if _is_windows:
     _lflags = f"-Wl,--subsystem,windows,--out-implib,libcode128_{_arch}.a"
-    _c_compiler = "mingw32"
+    _c_compiler = "mingw32"  # pylint: disable=C0103
 else:
     # if "linux" in _platform:
-    _c_compiler = "unix"
+    _c_compiler = "unix"  # pylint: disable=C0103
     _lflags = "-Wl,-soname,libcode128.so"  # pylint: disable=C0103
     if 'arm' in platform.machine():
         _arch = "armv7"  # pylint: disable=C0103
@@ -90,12 +90,12 @@ class CustomDevelop(develop):
 # )
 
 
-def add_compiler_to_setup_cfg(_compiler):
+def _add_compiler_to_setup_cfg(_compiler):
     conf = configparser.ConfigParser(inline_comment_prefixes="#")
 
-    with open('setup.cfg') as fp:
+    with open('setup.cfg', mode='r', encoding="cp1252") as _fp:
         try:
-            conf.read_file(fp)
+            conf.read_file(_fp)
         except configparser.Error:
             pass
 
@@ -111,8 +111,8 @@ def add_compiler_to_setup_cfg(_compiler):
         conf.add_section('build_ext')
         conf.set('build_ext', 'compiler', _compiler)
 
-    with open('setup.cfg', mode='w') as fp:
-        conf.write(fp, space_around_delimiters=True)
+    with open('setup.cfg', mode='w', encoding="cp1252") as _fp:
+        conf.write(_fp, space_around_delimiters=True)
 
 
 # setuptools.extension requires unix separator
@@ -125,7 +125,7 @@ def build(setup_kwargs):
     This is a callback for poetry used to hook in our extensions.
     """
 
-    add_compiler_to_setup_cfg(_c_compiler)
+    _add_compiler_to_setup_cfg(_c_compiler)
 
     setup_kwargs.update(
         {
