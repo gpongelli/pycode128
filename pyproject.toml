@@ -192,7 +192,7 @@ max-line-length=120
     build-frontend = "pip"
     build-verbosity = 3
 
-    before-test = "pip install --upgrade pip"
+    before-test = "python -m pip install --upgrade pip"
     test-requires = ["poetry", "tox", "pytest", "tox-direct"]
     test-command = [
         # takes tox & pytest configs from setup.cfg
