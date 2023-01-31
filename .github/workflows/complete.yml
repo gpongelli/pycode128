@@ -136,8 +136,17 @@ jobs:
       # https://github.com/actions/upload-artifact
       # make artifacts available through jobs and into action's webpage
       - uses: actions/upload-artifact@v3
+        name: Upload wheel
         with:
+          name: built_artifacts
           path: ./wheelhouse/*.whl
+
+      - uses: actions/upload-artifact@v3
+        name: Upload source
+        if: runner.os == 'Windows' && matrix.python-version == '3.11'
+        with:
+          name: built_artifacts
+          path: ./wheelhouse/*.tar.gz
 
       # https://github.com/codecov/codecov-action
       # Easily upload coverage reports to Codecov from GitHub Actions
@@ -182,6 +191,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           path: ./wheelhouse
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: ./wheelhouse
 
       # Build and publish documentation
       - name: Setup Pages
