@@ -219,3 +219,4 @@ max-line-length=120
         manylinux-i686-image = "manylinux2014"
         manylinux-aarch64-image = "manylinux2014"
         repair-wheel-command = ""
+        environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1" }
