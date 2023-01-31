@@ -192,6 +192,7 @@ max-line-length=120
     build-frontend = "pip"
     build-verbosity = 3
 
+    before-test = "pip install --upgrade pip"
     test-requires = ["poetry", "tox", "pytest", "tox-direct"]
     test-command = [
         # takes tox & pytest configs from setup.cfg
@@ -213,10 +214,12 @@ max-line-length=120
     [tool.cibuildwheel.macos]
         archs = ["x86_64"]
     [tool.cibuildwheel.linux]
-        archs = ["x86_64", "i686", "aarch64"]
+        # i686 arch needs cryptography to be manually built
+        # https://github.com/pyca/cryptography/blob/main/docs/installation.rst
+        archs = ["x86_64", "aarch64"]
         # Build using the manylinux2014 image
-        manylinux-x86_64-image = "manylinux2014"
-        manylinux-i686-image = "manylinux2014"
-        manylinux-aarch64-image = "manylinux2014"
+        manylinux-x86_64-image = "manylinux_2_28"
+        manylinux-i686-image = "manylinux_2_28"
+        manylinux-aarch64-image = "manylinux_2_28"
         repair-wheel-command = ""
         environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1" }
