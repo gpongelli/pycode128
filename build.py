@@ -20,6 +20,13 @@ from setuptools.extension import Extension
 # info
 #  https://stackoverflow.com/questions/6928110/how-may-i-override-the-compiler-gcc-flags-that-setup-py-uses-by-default
 
+print(f"SYSTEM: {platform.system()}")
+print(f"MACHINE: {platform.machine()}")
+print(f"UNAME: {platform.uname()}")
+print(f"RELEASE: {platform.release()}")
+print(f"VERSION: {platform.version()}")
+print(f"PROCESSOR: {platform.processor()}")
+
 _platform = platform.system().lower()
 _is_windows = 'windows' in _platform  # pylint: disable=C0103
 _arch = 'x86-64'  # pylint: disable=C0103
