@@ -156,6 +156,7 @@ jobs:
     strategy:
       matrix:
         python-version: [ "3.11" ]
+        poetry-version: [ "1.3" ]
         os: [ windows-latest ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -169,11 +170,27 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+
       - name: Install dependencies and Build sdist
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pipx build
-          pipx run build --sdist
+
+      # configuration is inside pyproject.toml
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.12.0
+        env:
+          CIBW_SKIP: '*-win32 pp*'
+          CIBW_BUILD: 'cp311-win_amd64'
+          CIBW_BEFORE_BUILD: "poetry build --format sdist"
+          CIBW_TEST_COMMAND: ''
+
+      - name: show temporary files
+        run: |
+          ls -l dist
 
       - uses: actions/upload-artifact@v3
         name: Upload sdist
