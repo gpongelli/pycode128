@@ -19,6 +19,11 @@
 
 #include "code128.h"
 
+// https://ishantheperson.github.io/posts/python-c-ext/
+#if PY_MAJOR_VERSION < 3
+#error "PyCode128 requires Python 3"
+#include "stopcompilation"  // non-existent file to stop compilation
+#endif
 
 /*
 
