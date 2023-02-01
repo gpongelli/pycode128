@@ -268,7 +268,7 @@ jobs:
         with:
           token: ${{ secrets.make_gh_release_token }}
           body: ${{ steps.changelog.outputs.version-changelog }}
-          files: wheelhouse/*.whl
+          files: wheelhouse/built_artifacts/*
           draft: false
           prerelease: false
 
@@ -280,4 +280,4 @@ jobs:
           user: ${{ secrets.pypi_username }}
           password: ${{ secrets.pypi_password }}
           skip_existing: true
-          packages_dir: ./wheelhouse/
+          packages_dir: ./wheelhouse/built_artifacts/
