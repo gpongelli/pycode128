@@ -230,6 +230,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          poetry install --with devel --sync --no-root
 
       - uses: actions/download-artifact@v3
         with:
