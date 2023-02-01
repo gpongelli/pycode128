@@ -216,7 +216,7 @@ max-line-length=120
     [tool.cibuildwheel.linux]
         # i686 arch needs cryptography to be manually built
         # https://github.com/pyca/cryptography/blob/main/docs/installation.rst
-        archs = ["x86_64", "aarch64"]
+        archs = ["x86_64"]
         # Build using the manylinux2014 image
         manylinux-x86_64-image = "manylinux_2_28"
         manylinux-i686-image = "manylinux_2_28"
