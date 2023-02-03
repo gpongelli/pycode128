@@ -7,6 +7,11 @@
 // reference https://www.pythonsheets.com/notes/python-c-extensions.html
 // ref       https://pysheeet.readthedocs.io/en/latest/notes/python-c-extensions.html
 
+// ref https://github.com/astropy/extension-helpers/blob/main/extension_helpers/src/compiler.c
+// ref https://github.com/felipec/libmtag-python/blob/master/libmtagmodule.c
+// ref https://stackoverflow.com/questions/58159184/implementing-unit-tests-for-a-python-c-extension
+
+
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN
 #endif
