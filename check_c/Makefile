@@ -28,7 +28,8 @@ extract:
 # build test runner
 build: $(CHECK_DEPS)
 	@$(CC) $(PY_CFLAGS) -o runner $(CHECK_DEPS) $(CHECK_LDFLAGS)
-	cp -f runner $(shell poetry env info --path)/bin
+
+#cp -f runner $(shell poetry env info --path)/bin
 
 # https://stackoverflow.com/questions/16467718/how-to-print-out-a-variable-in-makefile
 print-%  : ; @echo $* = $($*)

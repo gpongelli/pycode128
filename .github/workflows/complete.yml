@@ -131,6 +131,7 @@ jobs:
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
           CIBW_TEST_COMMAND_LINUX: |
             cd {project}
+            cp -f check_c/installed/runner $(poetry env info --path)/bin
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
             LD_LIBRARY_PATH={project}/check_c/installed/lib64 poetry run runner
 
