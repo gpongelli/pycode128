@@ -224,3 +224,8 @@ max-line-length=120
         repair-wheel-command = ""
         # https://stackoverflow.com/questions/47968578/python3-utf-8-decode-issue
         environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1", PYTHONIOENCODING="utf8" }
+        before-test = [
+            "apt install -y automake build-essential",
+            "python -m pip install --upgrade pip",
+            "cd check_c && make extract && make build",
+        ]

@@ -120,6 +120,8 @@ jobs:
             core.setOutput('cibw_build_version', 'cp' + '${{ matrix.python-version }}'.replaceAll(/[/.]/g, '').trim('-') + '-*');
 
       # configuration is inside pyproject.toml
+      # under linux, check tool is built and used to re-run pytest, it checks C code
+      # there are no compiler differences, so no need to run check tool in windows and macos
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
         env:
@@ -127,6 +129,10 @@ jobs:
           CIBW_TEST_COMMAND: |
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
+          CIBW_TEST_COMMAND_LINUX: |
+            cd {project}
+            poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
+            LD_LIBRARY_PATH={project}/check_c/installed/lib poetry run runner
 
       - name: show temporary files
         run: |
