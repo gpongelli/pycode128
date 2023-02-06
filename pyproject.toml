@@ -218,9 +218,9 @@ max-line-length=120
         # https://github.com/pyca/cryptography/blob/main/docs/installation.rst
         archs = ["x86_64"]
         # Build using the manylinux2014 image -> AlmaLinux 8 based
-        manylinux-x86_64-image = "manylinux_2_28"
-        manylinux-i686-image = "manylinux_2_28"
-        manylinux-aarch64-image = "manylinux_2_28"
+        manylinux-x86_64-image = "manylinux2014"
+        manylinux-i686-image = "manylinux2014"
+        manylinux-aarch64-image = "manylinux2014"
         repair-wheel-command = ""
         # https://stackoverflow.com/questions/47968578/python3-utf-8-decode-issue
         environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1", PYTHONIOENCODING="utf8" }
