@@ -21,7 +21,7 @@ CHECK_TOOL = check-0.15.2
 extract:
 	tar -xzvf $(shell find *.tar.gz)  > /dev/null 2>&1
 	mkdir -p installed
-	cd ./$(CHECK_TOOL) && autoreconf -i && ./configure --disable-build-docs --prefix=${CURDIR}/installed && make && make install
+	cd ./$(CHECK_TOOL) && autoreconf -i && ./configure --disable-build-docs --disable-subunit --prefix=${CURDIR}/installed && make && make install
 
 
 # build test runner
