@@ -202,7 +202,7 @@ max-line-length=120
     ]
 
     # Skip CPython 3.6 and CPython 3.7 , Disable building PyPy wheels on all platforms
-    skip = ["cp36-*", "cp37-*", "pp*"]
+    skip = ["cp36-*", "cp37-*", "pp*", "*musllinux*", "*aarch*", "*ppc*", "*s390*"]
     build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
 
     # configure cibuildwheel to build native archs ('auto'), and some emulated ones
@@ -218,14 +218,14 @@ max-line-length=120
         # https://github.com/pyca/cryptography/blob/main/docs/installation.rst
         archs = ["x86_64"]
         # Build using the manylinux2014 image -> AlmaLinux 8 based
-        manylinux-x86_64-image = "manylinux2014"
-        manylinux-i686-image = "manylinux2014"
-        manylinux-aarch64-image = "manylinux2014"
+        manylinux-x86_64-image = "manylinux_2_28"
+        manylinux-i686-image = "manylinux_2_28"
+        manylinux-aarch64-image = "manylinux_2_28"
         repair-wheel-command = ""
         # https://stackoverflow.com/questions/47968578/python3-utf-8-decode-issue
         environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1", PYTHONIOENCODING="utf8" }
         before-test = [
-            "yum install -y automake autoconf",
+            "yum install -y wget automake autoconf libtool",
             "python -m pip install --upgrade pip",
             "cd check_c && make extract && make build",
         ]
