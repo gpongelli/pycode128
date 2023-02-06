@@ -13,16 +13,17 @@ PATCHED_PY_LD_FLAGS := $(shell python3-config --embed --ldflags | sed -e 's/lpth
 
 
 # linker flags specifically for compiling the test runner (libcheck)
-CHECK_LDFLAGS = $(PATCHED_PY_LD_FLAGS) -L${CURDIR}/installed/lib -lcheck
+CHECK_LDFLAGS = $(PATCHED_PY_LD_FLAGS) -L${CURDIR}/installed/lib64 -lcheck
 
 CHECK_TOOL = check-0.15.2
 
 # extract tar.gz and install check locally
 extract:
 	tar -xzvf $(shell find *.tar.gz)  > /dev/null 2>&1
-	mkdir -p installed
-	cd ./$(CHECK_TOOL) && autoreconf -i && ./configure --disable-build-docs --disable-subunit --prefix=${CURDIR}/installed && make && make install
+	mkdir -p installed $(CHECK_TOOL)/build
+	cd $(CHECK_TOOL)/build && cmake --install-prefix ${CURDIR}/installed ../ && make && make install
 
+# cd ./$(CHECK_TOOL) && autoupdate && autoreconf -i && ./configure --disable-build-docs --disable-subunit --prefix=${CURDIR}/installed && make && make install
 
 # build test runner
 build: $(CHECK_DEPS)
