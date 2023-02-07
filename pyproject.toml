@@ -224,11 +224,6 @@ max-line-length=120
         repair-wheel-command = ""
         # https://stackoverflow.com/questions/47968578/python3-utf-8-decode-issue
         environment = { CRYPTOGRAPHY_DONT_BUILD_RUST="1", PYTHONIOENCODING="utf8" }
-        before-test = [
-            "yum install -y wget automake autoconf libtool",
-            "python -m pip install --upgrade pip",
-            "cd check_c && make extract && make build",
-        ]
         # skip musslinux build https://cibuildwheel.readthedocs.io/en/stable/options/#overrides
         [[tool.cibuildwheel.overrides]]
             select = "*-musllinux*"

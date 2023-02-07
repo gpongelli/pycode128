@@ -80,6 +80,15 @@ jobs:
         poetry-version: [ "1.3" ]
         # https://github.com/actions/runner-images list of images
         os: [ ubuntu-latest, windows-latest, macos-latest ]
+        include:
+          - python-version: "3.11"
+            python-sw: "3.11.1"
+          - python-version: "3.10"
+            python-sw: "3.10.9"
+          - python-version: "3.9"
+            python-sw: "3.9.16"
+          - python-version: "3.8"
+            python-sw: "3.8.16"
     runs-on: ${{ matrix.os }}
 
     outputs:
@@ -133,6 +142,18 @@ jobs:
             set -x
             echo $PATH
             echo $LD_LIBRARY_PATH
+          CIBW_BEFORE_TEST_LINUX: |
+            yum install -y wget automake autoconf libtool platform-python-devel
+            mkdir -p /opt/build_python
+            cd /opt/build_python
+            wget https://www.python.org/ftp/python/${{ matrix.python-sw }}/Python-${{ matrix.python-sw }}.tar.xz
+            tar xvf Python-${{ matrix.python-sw }}.tar.xz
+            cd Python-${{ matrix.python-sw }}.tar.xz
+            ./configure --enable-shared --enable-optimizations --disable-test-modules
+            make altinstall
+            cd {project}
+            python -m pip install --upgrade pip
+            cd {project}/check_c && make extract && make build
           CIBW_TEST_COMMAND_LINUX: |
             cd {project}
             cp -f check_c/installed/runner $(poetry env info --path)/bin

@@ -13,7 +13,8 @@ PATCHED_PY_LD_FLAGS := $(shell python3-config --embed --ldflags | sed -e 's/lpth
 
 
 # linker flags specifically for compiling the test runner (libcheck)
-CHECK_LDFLAGS = $(PATCHED_PY_LD_FLAGS) -L${CURDIR}/installed/lib64 -lcheck
+# adding standard lib folder for python installation from sources
+CHECK_LDFLAGS = $(PATCHED_PY_LD_FLAGS) -L/usr/local/lib/ -L${CURDIR}/installed/lib64 -lcheck
 
 CHECK_TOOL = check-0.15.2
 
