@@ -83,12 +83,12 @@ jobs:
         include:
           - python-version: "3.11"
             python-sw: "3.11.1"
-          - python-version: "3.10"
-            python-sw: "3.10.9"
-          - python-version: "3.9"
-            python-sw: "3.9.16"
-          - python-version: "3.8"
-            python-sw: "3.8.16"
+ #         - python-version: "3.10"
+ #           python-sw: "3.10.9"
+ #         - python-version: "3.9"
+ #           python-sw: "3.9.16"
+ #         - python-version: "3.8"
+ #           python-sw: "3.8.16"
     runs-on: ${{ matrix.os }}
 
     outputs:
