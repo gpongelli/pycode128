@@ -147,8 +147,8 @@ jobs:
             mkdir -p /opt/build_python
             cd /opt/build_python
             wget https://www.python.org/ftp/python/${{ matrix.python-sw }}/Python-${{ matrix.python-sw }}.tar.xz
-            tar xvf Python-${{ matrix.python-sw }}.tar.xz
-            cd Python-${{ matrix.python-sw }}.tar.xz
+            tar xvf Python-${{ matrix.python-sw }}.tar.xz > /dev/null 2>&1
+            cd Python-${{ matrix.python-sw }}
             ./configure --enable-shared --enable-optimizations --disable-test-modules
             make altinstall
             cd {project}
