@@ -93,7 +93,7 @@ jobs:
 
     outputs:
       cibw_build_version: ""
-      manylinux_image = ""
+      manylinux_image: ""
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
