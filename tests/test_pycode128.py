@@ -41,6 +41,18 @@ def test_object_creation():
     assert 'length' in _dir_code128
 
 
+def test_object_deletion():
+    """Test PyCode128 object deletion."""
+    _code128 = PyCode128('test')
+    assert _code128.input_data == 'test'
+
+    # delete object, accessing to it must raise NameError
+    # C framework should check not freed memory
+    del _code128
+    with pytest.raises(NameError) as ne:
+        _code128.input_data
+
+
 def test_content(response):
     """Sample pytest test function with the pytest fixture as an argument.
 
