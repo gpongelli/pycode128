@@ -21,7 +21,9 @@ CHECK_TOOL = check-0.15.2
 # extract tar.gz and install check locally
 extract:
 	tar -xzvf $(shell find *.tar.gz)  > /dev/null 2>&1
-	mkdir -p installed $(CHECK_TOOL)/build
+	mkdir -p ${CURDIR}/installed $(CHECK_TOOL)/build
+	pwd
+	ls -l
 	cd $(CHECK_TOOL)/build && cmake --install-prefix ${CURDIR}/installed ../ && make && make install
 
 # cd ./$(CHECK_TOOL) && autoupdate && autoreconf -i && ./configure --disable-build-docs --disable-subunit --prefix=${CURDIR}/installed && make && make install
@@ -29,6 +31,8 @@ extract:
 # build test runner
 build: $(CHECK_DEPS)
 	@$(CC) $(PY_CFLAGS) -o runner $(CHECK_DEPS) $(CHECK_LDFLAGS)
+	pwd
+	ls -l
 
 #cp -f runner $(shell poetry env info --path)/bin
 
