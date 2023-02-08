@@ -143,10 +143,10 @@ jobs:
             echo $PATH
             echo $LD_LIBRARY_PATH
           CIBW_BEFORE_TEST_LINUX: |
-            yum install -y wget automake autoconf libtool platform-python-devel
+            yum install -y wget automake autoconf libtool platform-python-devel bzip2-devel libffi-devel openssl-devel
             mkdir -p /opt/build_python
             cd /opt/build_python
-            wget https://www.python.org/ftp/python/${{ matrix.python-sw }}/Python-${{ matrix.python-sw }}.tar.xz
+            wget https://www.python.org/ftp/python/${{ matrix.python-sw }}/Python-${{ matrix.python-sw }}.tar.xz > /dev/null 2>&1
             tar xvf Python-${{ matrix.python-sw }}.tar.xz > /dev/null 2>&1
             cd Python-${{ matrix.python-sw }}
             ./configure --enable-shared --enable-optimizations --disable-test-modules
@@ -156,8 +156,9 @@ jobs:
             cd {project}/check_c && make extract && make build
           CIBW_TEST_COMMAND_LINUX: |
             cd {project}
-            cp -f check_c/installed/runner $(poetry env info --path)/bin
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
+            poetry env info --path
+            cp -f {project}/check_c/installed/runner $(poetry env info --path)/bin
             LD_LIBRARY_PATH={project}/check_c/installed/lib64 poetry run runner
 
       - name: show temporary files
