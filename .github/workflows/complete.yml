@@ -158,7 +158,7 @@ jobs:
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
             poetry env info --path
-            cp -f {project}/check_c/installed/runner $(poetry env info --path)/bin
+            cp -f {project}/check_c/runner $(poetry env info --path)/bin
             LD_LIBRARY_PATH={project}/check_c/installed/lib64 poetry run runner
 
       - name: show temporary files
