@@ -30,6 +30,9 @@ extract:
 
 # build test runner
 build: $(CHECK_DEPS)
+	echo $(LD_LIBRARY_PATH)
+	echo $(CHECK_LDFLAGS)
+	ls -l /opt/build_python/installed/lib/
 	@$(CC) $(PY_CFLAGS) -o runner $(CHECK_DEPS) $(CHECK_LDFLAGS)
 	pwd
 	ls -l
