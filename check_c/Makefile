@@ -7,8 +7,12 @@ CHECK_DEPS = $(wildcard *.c)
 # use python3-config to get python compiler and linker flags for use when
 # linking python into external C code (our test runner)
 PY_CFLAGS ?= -fPIE $(shell python3-config --cflags) -I${CURDIR}/installed/include
+
 # --embed is required on ubuntu or -lpythonx.y is omitted by --ldflags
 #PY_LDFLAGS := $(shell python3-config --embed --ldflags)
+# lpthread no more exist in favor of pthread, needed patching
+# due to new ENVs, that put installed folder before all, and python3-config symbolic
+#   link into the image, now output is correct
 PATCHED_PY_LD_FLAGS := $(shell python3-config --embed --ldflags | sed -e 's/lpthread/pthread/')
 
 
