@@ -7,14 +7,18 @@ CHECK_DEPS = $(wildcard *.c)
 # use python3-config to get python compiler and linker flags for use when
 # linking python into external C code (our test runner)
 PY_CFLAGS ?= -fPIE $(shell python3-config --cflags) -I${CURDIR}/installed/include
+
 # --embed is required on ubuntu or -lpythonx.y is omitted by --ldflags
 #PY_LDFLAGS := $(shell python3-config --embed --ldflags)
+# lpthread no more exist in favor of pthread, needed patching
+# due to new ENVs, that put installed folder before all, and python3-config symbolic
+#   link into the image, now output is correct
 PATCHED_PY_LD_FLAGS := $(shell python3-config --embed --ldflags | sed -e 's/lpthread/pthread/')
 
 
 # linker flags specifically for compiling the test runner (libcheck)
 # adding standard lib folder for python installation from sources
-CHECK_LDFLAGS = $(PATCHED_PY_LD_FLAGS) -L/usr/local/lib/ -L${CURDIR}/installed/lib64 -lcheck
+CHECK_LDFLAGS = -L$(subst :, -L,$(LD_LIBRARY_PATH)) -L${CURDIR}/installed/lib64 $(PATCHED_PY_LD_FLAGS) -lcheck
 
 CHECK_TOOL = check-0.15.2
 
@@ -30,6 +34,9 @@ extract:
 
 # build test runner
 build: $(CHECK_DEPS)
+	echo $(LD_LIBRARY_PATH)
+	echo $(CHECK_LDFLAGS)
+	ls -l /opt/build_python/installed/lib/
 	@$(CC) $(PY_CFLAGS) -o runner $(CHECK_DEPS) $(CHECK_LDFLAGS)
 	pwd
 	ls -l

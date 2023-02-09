@@ -93,6 +93,7 @@ jobs:
 
     outputs:
       cibw_build_version: ""
+      manylinux_image: ""
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -127,6 +128,7 @@ jobs:
         with:
           script: |
             core.setOutput('cibw_build_version', 'cp' + '${{ matrix.python-version }}'.replaceAll(/[/.]/g, '').trim('-') + '-*');
+            core.setOutput('manylinux_image', 'gpongelli/manylinux_python:py' + '${{ matrix.python-version }}'.replaceAll(/[/.]/g, '').trim('-') + '-latest');
 
       # configuration is inside pyproject.toml
       # under linux, check tool is built and used to re-run pytest, it checks C code
@@ -138,28 +140,17 @@ jobs:
           CIBW_TEST_COMMAND: |
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
-          CIBW_BEFORE_ALL_LINUX: |
-            set -x
-            echo $PATH
-            echo $LD_LIBRARY_PATH
+          CIBW_MANYLINUX_X86_64_IMAGE: ${{ steps.set_cibuildwheel_build.outputs.manylinux_image }}
           CIBW_BEFORE_TEST_LINUX: |
-            yum install -y wget automake autoconf libtool platform-python-devel bzip2-devel libffi-devel openssl-devel
-            mkdir -p /opt/build_python
-            cd /opt/build_python
-            wget https://www.python.org/ftp/python/${{ matrix.python-sw }}/Python-${{ matrix.python-sw }}.tar.xz > /dev/null 2>&1
-            tar xvf Python-${{ matrix.python-sw }}.tar.xz > /dev/null 2>&1
-            cd Python-${{ matrix.python-sw }}
-            ./configure --enable-shared --enable-optimizations --disable-test-modules
-            make altinstall
             cd {project}
-            python -m pip install --upgrade pip
+            python3 -m pip install --upgrade pip
             cd {project}/check_c && make extract && make build
           CIBW_TEST_COMMAND_LINUX: |
             cd {project}
             poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
             poetry env info --path
             cp -f {project}/check_c/runner $(poetry env info --path)/bin
-            LD_LIBRARY_PATH=/usr/local/lib:{project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
+            LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
 
       - name: show temporary files
         run: |
