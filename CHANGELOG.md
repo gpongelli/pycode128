@@ -1,3 +1,9 @@
+## 0.3.0 (2023-02-09)
+
+### Feat
+
+- custom manylinux image speeds up workflow
+
 ## 0.2.0 (2023-02-08)
 
 ### Feat
