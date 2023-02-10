@@ -316,6 +316,8 @@ jobs:
             source "$HOME/.cargo/env"
             export PATH=$HOME/.cargo/bin:/opt/build_python/installed/bin:$PATH
             export LD_LIBRARY_PATH=/opt/build_python/installed/lib:$LD_LIBRARY_PATH
+            echo "[global]" > /etc/pip.conf
+            echo "extra-index-url=https://www.piwheels.org/simple" >> /etc/pip.conf
             rustc --version
             python3 --version
             python3 -m pip install --upgrade pip
