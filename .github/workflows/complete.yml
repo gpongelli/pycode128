@@ -236,7 +236,7 @@ jobs:
   build-rpi:
     needs: pre-checks
 
-    name: ARM Build on ${{ matrix.os }} - ${{ matrix.python-version }}
+    name: ARM Build on ${{ matrix.arch }} - ${{ matrix.python-sw }}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
