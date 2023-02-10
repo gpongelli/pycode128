@@ -309,7 +309,7 @@ jobs:
           cpu: ${{ matrix.cpu }}
           shell: bash
           copy_repository_path: /opt/repo
-          copy_artifact_path: dist
+          copy_artifact_path: pycode128/dist
           image_additional_mb: 4096
           commands: |
             export PATH=/opt/build_python/installed/bin:$PATH
@@ -323,9 +323,9 @@ jobs:
             export PATH=$PATH:/opt/pipx_bin
             find / -iname poetry
             poetry --version
-            cd /opt/repo
+            cd /opt/repo/pycode128
             poetry run tox -e build
-            ls -l /opt/repo/dist
+            ls -l /opt/repo/pycode128/dist
 
       # https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
