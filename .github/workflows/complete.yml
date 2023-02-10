@@ -312,8 +312,11 @@ jobs:
           copy_artifact_path: pycode128/dist
           image_additional_mb: 4096
           commands: |
+            curl  --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh -s -- -y
             export PATH=/opt/build_python/installed/bin:$PATH
             export LD_LIBRARY_PATH=/opt/build_python/installed/lib:$LD_LIBRARY_PATH
+            find / -iname rustc
+            rustc --version
             python3 --version
             python3 -m pip install --upgrade pip
             python3 -m pip install pipx
