@@ -324,6 +324,7 @@ jobs:
             find / -iname poetry
             poetry --version
             cd /opt/repo/pycode128
+            poetry install -v --with devel --no-root --sync
             poetry run tox -e build
             ls -l /opt/repo/pycode128/dist
 
