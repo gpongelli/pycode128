@@ -259,6 +259,25 @@ PyCode128_new(PyTypeObject *type, PyObject *args, PyObject *kw)
             // self is probably not null here, so force the return value
             return NULL;
         }
+
+        self->encoded_data = PyUnicode_FromString("");
+        if (self->encoded_data == NULL) {
+            Py_XDECREF(self->input_data);
+            Py_XDECREF(self->encoded_data);
+            Py_XDECREF(self);
+            // self is probably not null here, so force the return value
+            return NULL;
+        }
+
+        self->length = PyLong_FromUnsignedLong(0);
+        if (self->length == NULL) {
+            Py_XDECREF(self->input_data);
+            Py_XDECREF(self->encoded_data);
+            Py_XDECREF(self->length);
+            Py_XDECREF(self);
+            // self is probably not null here, so force the return value
+            return NULL;
+        }
     }
     return (PyObject *) self;
 }
