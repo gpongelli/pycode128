@@ -74,7 +74,7 @@ typedef struct {
 
 
 /* methods implementation */
-static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
     const char *data;
     size_t barcode_len = 0;
@@ -100,7 +100,7 @@ static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored
 }
 
 
-static PyObject* encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /*  size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength) */
     const char *data;
@@ -162,7 +162,7 @@ static PyObject* encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 
 
 
-static PyObject* encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /* size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength) */
     const char *data;
@@ -232,9 +232,9 @@ PyDoc_STRVAR(encode_raw_doc,    "Encode raw string.\nReturns the length of barco
 // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
 static PyMethodDef PyCode128_methods[] = {
     /*  ml_name,                ml_meth,              ml_flags,         ml_doc           */
-    {"estimate_len",    (PyCFunction)estimate_len,   METH_NOARGS,   estimate_len_doc},
-    {"encode_gs1",      (PyCFunction)encode_gs1,     METH_NOARGS,   encode_gs1_doc},
-    {"encode_raw",      (PyCFunction)encode_raw,     METH_NOARGS,   encode_raw_doc},
+    {"estimate_len",    (PyCFunction)PyCode128_estimate_len,   METH_NOARGS,   estimate_len_doc},
+    {"encode_gs1",      (PyCFunction)PyCode128_encode_gs1,     METH_NOARGS,   encode_gs1_doc},
+    {"encode_raw",      (PyCFunction)PyCode128_encode_raw,     METH_NOARGS,   encode_raw_doc},
     {NULL}  /* Sentinel */
 };
 
