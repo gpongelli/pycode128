@@ -482,7 +482,7 @@ static PyObject* module_init(void) {
 
     if (PyModule_AddObject(module, "PyCode128", (PyObject *) &PyCode128Type) < 0) {
         Py_DECREF(&PyCode128Type);
-        Py_DECREF(&module);
+        Py_DECREF(module);
         return NULL;
     }
 
