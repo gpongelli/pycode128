@@ -385,6 +385,7 @@ static PyGetSetDef PyCode128_getsetters[] = {
     {"input_data",      (getter)PyCode128_get_input_data,   (setter)PyCode128_set_input_data,   input_data_doc },
     {"encoded_data",    (getter)PyCode128_get_encoded_data, NULL},  // read-only
     {"length",          (getter)PyCode128_get_length,       NULL},  // read-only
+    {NULL}  /* Sentinel */
 };
 
 
