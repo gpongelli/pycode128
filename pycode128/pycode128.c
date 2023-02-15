@@ -89,7 +89,7 @@ static PyObject* PyCode128_estimate_len(PyCode128Object *self, PyObject *Py_UNUS
      *  ref  https://docs.python.org/3/c-api/arg.html
      *  PyArg_ParseTuple converts PyObject to C type
      */
-    if (!PyArg_ParseTuple(self->input_data, "s", &data)) {
+    if (!PyArg_Parse(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -119,7 +119,7 @@ static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED
      *  ref  https://docs.python.org/3/c-api/arg.html
      *  PyArg_ParseTuple converts PyObject to C type
      */
-    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
+    if(!PyArg_Parse(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -181,7 +181,7 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
      *  ref  https://docs.python.org/3/c-api/arg.html
      *  PyArg_ParseTuple converts PyObject to C type
      */
-    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
+    if(!PyArg_Parse(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -231,7 +231,7 @@ PyDoc_STRVAR(encode_raw_doc,    "Encode raw string.\nReturns the length of barco
 /* methods definition */
 // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
 static PyMethodDef PyCode128_methods[] = {
-    /*  ml_name,                ml_meth,              ml_flags,         ml_doc           */
+    /*  ml_name,                ml_meth,                         ml_flags,         ml_doc       */
     {"estimate_len",    (PyCFunction)PyCode128_estimate_len,   METH_NOARGS,   estimate_len_doc},
     {"encode_gs1",      (PyCFunction)PyCode128_encode_gs1,     METH_NOARGS,   encode_gs1_doc},
     {"encode_raw",      (PyCFunction)PyCode128_encode_raw,     METH_NOARGS,   encode_raw_doc},
