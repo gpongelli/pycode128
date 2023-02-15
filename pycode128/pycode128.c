@@ -223,6 +223,25 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
 }
 
 
+static int
+PyCode128_traverse(PyCode128Object *self, visitproc visit, void *arg)
+{
+    Py_VISIT(self->input_data);
+    Py_VISIT(self->encoded_data);
+    Py_VISIT(self->length);
+    return 0;
+}
+
+
+static int
+PyCode128_clear(PyCode128Object *self)
+{
+    Py_CLEAR(self->input_data);
+    Py_CLEAR(self->encoded_data);
+    Py_CLEAR(self->length);
+    return 0;
+}
+
 
 PyDoc_STRVAR(estimate_len_doc,  "Returns label's estimated length.");
 PyDoc_STRVAR(encode_gs1_doc,    "Encode the GS1 string.\nReturns the length of barcode data in bytes");
@@ -313,9 +332,8 @@ PyCode128_init(PyCode128Object *self, PyObject *args, PyObject *kw)
 static void
 PyCode128_dealloc(PyCode128Object *self)
 {
-    Py_XDECREF(self->input_data);
-    Py_XDECREF(self->encoded_data);
-    Py_XDECREF(self->length);
+    PyObject_GC_UnTrack(self);
+    PyCode128_clear(self);
     Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -343,24 +361,19 @@ PyCode128_get_input_data(PyCode128Object *self, void *closure)
 static int
 PyCode128_set_input_data(PyCode128Object *self, PyObject *value, void *closure)
 {
-    int rc = -1;
-    PyObject *tmp;
-
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete the input_data attribute.");
-    } else {
-        if (!PyUnicode_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "value should be unicode");
-        } else {
-            rc = 0; // return value
-            tmp = self->input_data;
-            Py_INCREF(value);
-            self->input_data = value;
-            Py_DECREF(tmp);
-        }
+        return -1;
+    }
+    if (!PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "value should be unicode");
+        return -1;
     }
 
-    return rc;
+    Py_INCREF(value);
+    Py_CLEAR(self->input_data);
+    self->input_data = value;
+    return 0;
 }
 
 static PyObject *
@@ -428,10 +441,12 @@ static PyTypeObject PyCode128Type = {
     .tp_doc = pycode128_type_doc,
     .tp_basicsize = sizeof(PyCode128Object),
     .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
     .tp_new = PyCode128_new,
     .tp_init = (initproc) PyCode128_init,
     .tp_dealloc = (destructor) PyCode128_dealloc,
+    .tp_traverse = (traverseproc) PyCode128_traverse,
+    .tp_clear = (inquiry) PyCode128_clear,
     .tp_getset = PyCode128_getsetters,
     .tp_members = PyCode128_members,
     .tp_methods = PyCode128_methods,
