@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+//
+// SPDX-License-Identifier: MIT
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

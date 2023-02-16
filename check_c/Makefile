@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+#
+# SPDX-License-Identifier: MIT
+
 # Makefile (GNU make)
 
 CC = gcc
