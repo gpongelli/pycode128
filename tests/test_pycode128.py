@@ -62,8 +62,8 @@ def test_object_deletion():
     # delete object, accessing to it must raise NameError
     # C framework should check not freed memory
     del _code128
-    with pytest.raises(NameError) as ne:
-        _code128.input_data
+    with pytest.raises(NameError):
+        _code128.input_data  # noqa: F821
 
 
 def test_attribute_deletion():
@@ -76,7 +76,7 @@ def test_attribute_deletion():
 def test_empty_creation():
     """Test PyCode128 object empty init."""
     with pytest.raises(TypeError):
-        _code128 = PyCode128()
+        _ = PyCode128()
 
 
 def test_change_input_data():
@@ -97,6 +97,7 @@ def test_set_encoded_data_length():
 
 
 def test_encode_no_arg():
+    """Test PyCode128 encode with not necessary argument."""
     _code128 = PyCode128('test')
     with pytest.raises(TypeError):
         _code128.encode_raw('new_arg')
@@ -105,6 +106,7 @@ def test_encode_no_arg():
 
 
 def test_encode_raw():
+    """Test encode_raw method."""
     _code128 = PyCode128('test')
     _code128.encode_raw()
     assert _code128.length == 99
@@ -121,6 +123,7 @@ def test_encode_raw():
 
 
 def test_encode_gs1():
+    """Test encode_gs1 method."""
     _code128 = PyCode128('test')
     _code128.encode_gs1()
     assert _code128.length == 99
