@@ -73,6 +73,45 @@ typedef struct {
 
 
 
+static int
+input_checks(PyCode128Object *self) {
+    /* check for input data */
+    if (self->input_data == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+        return -1;
+    }
+
+    if (!PyUnicode_CheckExact(self->input_data)) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is not Unicode.");
+        return -1;
+    }
+
+    return 0;
+}
+
+void
+set_output_values(PyCode128Object *self, PyObject *pyobj_encoded, PyObject *pyobj_length)
+{
+    if (pyobj_encoded != NULL) {
+        Py_INCREF(pyobj_encoded);
+        Py_CLEAR(self->encoded_data);
+        self->encoded_data = pyobj_encoded;
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+
+    if (pyobj_length != NULL) {
+        Py_INCREF(pyobj_length);
+        Py_CLEAR(self->length);
+        self->length = pyobj_length;
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+}
+
+
 /* methods implementation */
 static PyObject* PyCode128_estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
@@ -80,8 +119,7 @@ static PyObject* PyCode128_estimate_len(PyCode128Object *self, PyObject *Py_UNUS
     size_t barcode_len = 0;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
@@ -107,20 +145,17 @@ static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
-    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
-    /* Parse argument, expected a const char *
-     *  ref  https://docs.python.org/3/c-api/arg.html
-     *  PyArg_ParseTuple converts PyObject to C type
-     */
-    if(!PyArg_Parse(self->input_data, "s", &data)) {
-        // PyArg_ParseTuple evaluate to false on failure
+    /* Convert Unicode string to const char*  */
+    data = PyUnicode_AsUTF8(self->input_data);
+    if(!data) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot convert input data.");
         return NULL;
     }
 
@@ -132,36 +167,19 @@ static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED
     }
 
     barcode_len = code128_encode_gs1(data, &barcode_data[0], max_length);
-
-    // Py_BuildValue creates PyObject
-    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    free(barcode_data);
-    if (pyobj_encoded != NULL) {
-        tmp_enc = self->encoded_data;
-        Py_INCREF(pyobj_encoded);
-        self->encoded_data = pyobj_encoded;
-        Py_XDECREF(tmp_enc);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    if (barcode_len == 0) {
+        PyErr_SetString(PyExc_AttributeError, "Invalid characters in string.");
+        return NULL;
     }
 
     // Py_BuildValue creates PyObject, y# to have bytearray
     pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
-    if (pyobj_length != NULL) {
-        tmp_len = self->length;
-        Py_INCREF(pyobj_length);
-        self->length = pyobj_length;
-        Py_XDECREF(tmp_len);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
-    }
+    set_output_values(self, pyobj_encoded, pyobj_length);
+    free(barcode_data);
 
     Py_RETURN_NONE;
 }
-
 
 
 static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
@@ -171,20 +189,17 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
-    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
-    /* Parse argument, expected a const char *
-     *  ref  https://docs.python.org/3/c-api/arg.html
-     *  PyArg_ParseTuple converts PyObject to C type
-     */
-    if(!PyArg_Parse(self->input_data, "s", &data)) {
-        // PyArg_ParseTuple evaluate to false on failure
+    /* Convert Unicode string to const char*  */
+    data = PyUnicode_AsUTF8(self->input_data);
+    if(!data) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot convert input data.");
         return NULL;
     }
 
@@ -196,32 +211,16 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
     }
 
     barcode_len = code128_encode_raw(data, &barcode_data[0], max_length);
-
-    // Py_BuildValue creates PyObject
-    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    free(barcode_data);
-    if (pyobj_encoded != NULL) {
-        tmp_enc = self->encoded_data;
-        Py_INCREF(pyobj_encoded);
-        self->encoded_data = pyobj_encoded;
-        Py_XDECREF(tmp_enc);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    if (barcode_len == 0) {
+        PyErr_SetString(PyExc_AttributeError, "Invalid characters in string.");
+        return NULL;
     }
 
-    // Py_BuildValue creates PyObject
+    // Py_BuildValue creates PyObject, y# to have bytearray
     pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
-    if (pyobj_length != NULL) {
-        tmp_len = self->length;
-        Py_INCREF(pyobj_length);
-        self->length = pyobj_length;
-        Py_XDECREF(tmp_len);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
-    }
+    set_output_values(self, pyobj_encoded, pyobj_length);
+    free(barcode_data);
 
     Py_RETURN_NONE;
 }
