@@ -146,6 +146,8 @@ static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED
            Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
     }
 
+    // Py_BuildValue creates PyObject, y# to have bytearray
+    pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
     if (pyobj_length != NULL) {
         tmp_len = self->length;
@@ -208,6 +210,8 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
            Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
     }
 
+    // Py_BuildValue creates PyObject
+    pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
     if (pyobj_length != NULL) {
         tmp_len = self->length;
