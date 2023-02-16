@@ -103,6 +103,23 @@ def test_encode_no_arg():
     with pytest.raises(TypeError):
         _code128.encode_gs1('new_arg')
 
+
+def test_encode_raw():
+    _code128 = PyCode128('test')
+    _code128.encode_raw()
+    assert _code128.length == 99
+    assert isinstance(_code128.encoded_data, bytes)
+    assert _code128.length == len(_code128.encoded_data)
+
+
+def test_encode_gs1():
+    _code128 = PyCode128('test')
+    _code128.encode_gs1()
+    assert _code128.length == 99
+    assert isinstance(_code128.encoded_data, bytes)
+    assert _code128.length == len(_code128.encoded_data)
+
+
 def test_content(response):
     """Sample pytest test function with the pytest fixture as an argument.
 
