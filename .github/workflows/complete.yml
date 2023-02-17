@@ -240,18 +240,18 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-sw: [ $PY_311_SW, $PY_310_SW, $PY_39_SW, $PY_38_SW ]
+        python-sw: [ $PY_39_SW, $PY_38_SW ]  # [ $PY_311_SW, $PY_310_SW, $PY_39_SW, $PY_38_SW ]
         arch: [ armv6l, armv7l, aarch64 ]
         include:
         # arm1176 is the CPU of BCM2835 which is the SOC of first generation RaspberryPi and RaspberryPi Zero.
-        - arch: armv6l
-          python-sw: $PY_311_SW
-          cpu: arm1176
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py311.img.xz
-        - arch: armv6l
-          python-sw: $PY_310_SW
-          cpu: arm1176
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py310.img.xz
+#        - arch: armv6l
+#          python-sw: $PY_311_SW
+#          cpu: arm1176
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py311.img.xz
+#        - arch: armv6l
+#          python-sw: $PY_310_SW
+#          cpu: arm1176
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py310.img.xz
         - arch: armv6l
           python-sw: $PY_39_SW
           cpu: arm1176
@@ -262,14 +262,14 @@ jobs:
           base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py38.img.xz
         # cortex-a7 equivalent to cortex-a7:cortex-a53. Optimized for later Pi models (Pi 3/Pi 4 and Pi Zero 2).
         # Not suitable for Pi 1/Pi 2/Pi Zero.
-        - arch: armv7l
-          python-sw: $PY_311_SW
-          cpu: cortex-a7
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py311.img.xz
-        - arch: armv7l
-          python-sw: $PY_310_SW
-          cpu: cortex-a7
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py310.img.xz
+#        - arch: armv7l
+#          python-sw: $PY_311_SW
+#          cpu: cortex-a7
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py311.img.xz
+#        - arch: armv7l
+#          python-sw: $PY_310_SW
+#          cpu: cortex-a7
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py310.img.xz
         - arch: armv7l
           python-sw: $PY_39_SW
           cpu: cortex-a7
@@ -279,14 +279,14 @@ jobs:
           cpu: cortex-a7
           base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py38.img.xz
         # cortex-a53 is the 64 bits CPU of the first 64 bits Raspberry Pi models
-        - arch: aarch64
-          python-sw: $PY_311_SW
-          cpu: cortex-a53
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py311.img.xz
-        - arch: aarch64
-          python-sw: $PY_310_SW
-          cpu: cortex-a53
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py310.img.xz
+#        - arch: aarch64
+#          python-sw: $PY_311_SW
+#          cpu: cortex-a53
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py311.img.xz
+#        - arch: aarch64
+#          python-sw: $PY_310_SW
+#          cpu: cortex-a53
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py310.img.xz
         - arch: aarch64
           python-sw: $PY_39_SW
           cpu: cortex-a53
@@ -330,7 +330,7 @@ jobs:
           path: ./dist/*.whl
 
   publish:
-    needs: [ build-test, build-sdist ]  #, build-rpi ]
+    needs: [ build-test, build-sdist, build-rpi ]
     name: Publish built artifacts
     if: startsWith(github.ref, 'refs/tags/')
     strategy:
