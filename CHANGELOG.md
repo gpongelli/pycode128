@@ -1,3 +1,29 @@
+## 0.4.0 (2023-02-17)
+
+### Feat
+
+- tests on encoded data
+- added PIL, updated other deps
+- class to convert bytes to PIL image
+- licensing check_c subfolder
+- new tests
+- reuse common checks
+- build a byte array instead of string
+- new tests
+- support cyclic garbage collection
+
+### Fix
+
+- macOS 12 has issue building with python 3.8
+- macos environment variable minimum target
+- lint stage passed
+- missing sentinel
+- input_data is not a tuple
+- module decref
+- allocate members
+- avoid same method name
+- README update
+
 ## 0.3.0 (2023-02-09)
 
 ### Feat
