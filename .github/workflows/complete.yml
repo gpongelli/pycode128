@@ -240,7 +240,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-sw: [ "3.9.16", "3.8.16" ]
+        python-sw: [ "3.9.16" ]
         arch: [ armv6l, armv7l, aarch64 ]
         include:
         # arm1176 is the CPU of BCM2835 which is the SOC of first generation RaspberryPi and RaspberryPi Zero.
@@ -256,10 +256,10 @@ jobs:
           python-sw: "3.9.16"
           cpu: arm1176
           base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py39.img.xz
-        - arch: armv6l
-          python-sw: "3.8.16"
-          cpu: arm1176
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py38.img.xz
+#        - arch: armv6l
+#          python-sw: "3.8.16"
+#          cpu: arm1176
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv6l-py38.img.xz
         # cortex-a7 equivalent to cortex-a7:cortex-a53. Optimized for later Pi models (Pi 3/Pi 4 and Pi Zero 2).
         # Not suitable for Pi 1/Pi 2/Pi Zero.
 #        - arch: armv7l
@@ -274,10 +274,10 @@ jobs:
           python-sw: "3.9.16"
           cpu: cortex-a7
           base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py39.img.xz
-        - arch: armv7l
-          python-sw: "3.8.16"
-          cpu: cortex-a7
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py38.img.xz
+#        - arch: armv7l
+#          python-sw: "3.8.16"
+#          cpu: cortex-a7
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-armv7l-py38.img.xz
         # cortex-a53 is the 64 bits CPU of the first 64 bits Raspberry Pi models
 #        - arch: aarch64
 #          python-sw: "3.11.1"
@@ -291,10 +291,10 @@ jobs:
           python-sw: "3.9.16"
           cpu: cortex-a53
           base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py39.img.xz
-        - arch: aarch64
-          python-sw: "3.8.16"
-          cpu: cortex-a53
-          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py38.img.xz
+#        - arch: aarch64
+#          python-sw: "3.8.16"
+#          cpu: cortex-a53
+#          base_image: https://github.com/gpongelli/arm-runner-python/releases/download/$ARM_IMG_TAG/$ARM_IMG_TAG-aarch64-py38.img.xz
 
     steps:
       - uses: actions/checkout@v3
