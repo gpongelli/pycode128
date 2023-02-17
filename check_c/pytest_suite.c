@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Gabriele Pongelli
+//
+// SPDX-License-Identifier: MIT
+
 #define PY_SSIZE_T_CLEAN
 #include "Python.h"
 

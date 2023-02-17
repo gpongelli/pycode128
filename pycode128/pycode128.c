@@ -73,15 +73,53 @@ typedef struct {
 
 
 
+static int
+input_checks(PyCode128Object *self) {
+    /* check for input data */
+    if (self->input_data == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+        return -1;
+    }
+
+    if (!PyUnicode_CheckExact(self->input_data)) {
+        PyErr_SetString(PyExc_AttributeError, "Input data is not Unicode.");
+        return -1;
+    }
+
+    return 0;
+}
+
+void
+set_output_values(PyCode128Object *self, PyObject *pyobj_encoded, PyObject *pyobj_length)
+{
+    if (pyobj_encoded != NULL) {
+        Py_INCREF(pyobj_encoded);
+        Py_CLEAR(self->encoded_data);
+        self->encoded_data = pyobj_encoded;
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+
+    if (pyobj_length != NULL) {
+        Py_INCREF(pyobj_length);
+        Py_CLEAR(self->length);
+        self->length = pyobj_length;
+    } else {
+        /* PyBuild_value:
+           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    }
+}
+
+
 /* methods implementation */
-static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
     const char *data;
     size_t barcode_len = 0;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
@@ -89,7 +127,7 @@ static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored
      *  ref  https://docs.python.org/3/c-api/arg.html
      *  PyArg_ParseTuple converts PyObject to C type
      */
-    if (!PyArg_ParseTuple(self->input_data, "s", &data)) {
+    if (!PyArg_Parse(self->input_data, "s", &data)) {
         // PyArg_ParseTuple evaluate to false on failure
         return NULL;
     }
@@ -100,27 +138,24 @@ static PyObject* estimate_len(PyCode128Object *self, PyObject *Py_UNUSED(ignored
 }
 
 
-static PyObject* encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /*  size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength) */
     const char *data;
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
-    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
-    /* Parse argument, expected a const char *
-     *  ref  https://docs.python.org/3/c-api/arg.html
-     *  PyArg_ParseTuple converts PyObject to C type
-     */
-    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
-        // PyArg_ParseTuple evaluate to false on failure
+    /* Convert Unicode string to const char*  */
+    data = PyUnicode_AsUTF8(self->input_data);
+    if(!data) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot convert input data.");
         return NULL;
     }
 
@@ -132,57 +167,39 @@ static PyObject* encode_gs1(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
     }
 
     barcode_len = code128_encode_gs1(data, &barcode_data[0], max_length);
-
-    // Py_BuildValue creates PyObject
-    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    free(barcode_data);
-    if (pyobj_encoded != NULL) {
-        tmp_enc = self->encoded_data;
-        Py_INCREF(pyobj_encoded);
-        self->encoded_data = pyobj_encoded;
-        Py_XDECREF(tmp_enc);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    if (barcode_len == 0) {
+        PyErr_SetString(PyExc_AttributeError, "Invalid characters in string.");
+        return NULL;
     }
 
+    // Py_BuildValue creates PyObject, y# to have bytearray
+    pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
-    if (pyobj_length != NULL) {
-        tmp_len = self->length;
-        Py_INCREF(pyobj_length);
-        self->length = pyobj_length;
-        Py_XDECREF(tmp_len);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
-    }
+    set_output_values(self, pyobj_encoded, pyobj_length);
+    free(barcode_data);
 
     Py_RETURN_NONE;
 }
 
 
-
-static PyObject* encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
+static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
 {
 /* size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength) */
     const char *data;
     char *barcode_data;  // out value
     size_t max_length = 0;
     size_t barcode_len = 0; // out value
-    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL, *tmp_enc = NULL, *tmp_len = NULL;
+    PyObject *pyobj_encoded = NULL, *pyobj_length = NULL;
 
     /* check for input data */
-    if (self->input_data == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Input data is missing.");
+    if (input_checks(self) != 0) {
         return NULL;
     }
 
-    /* Parse argument, expected a const char *
-     *  ref  https://docs.python.org/3/c-api/arg.html
-     *  PyArg_ParseTuple converts PyObject to C type
-     */
-    if(!PyArg_ParseTuple(self->input_data, "s", &data)) {
-        // PyArg_ParseTuple evaluate to false on failure
+    /* Convert Unicode string to const char*  */
+    data = PyUnicode_AsUTF8(self->input_data);
+    if(!data) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot convert input data.");
         return NULL;
     }
 
@@ -194,34 +211,39 @@ static PyObject* encode_raw(PyCode128Object *self, PyObject *Py_UNUSED(ignored))
     }
 
     barcode_len = code128_encode_raw(data, &barcode_data[0], max_length);
-
-    // Py_BuildValue creates PyObject
-    pyobj_encoded = Py_BuildValue("s", barcode_data);  // check if bytes object is better
-    free(barcode_data);
-    if (pyobj_encoded != NULL) {
-        tmp_enc = self->encoded_data;
-        Py_INCREF(pyobj_encoded);
-        self->encoded_data = pyobj_encoded;
-        Py_XDECREF(tmp_enc);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
+    if (barcode_len == 0) {
+        PyErr_SetString(PyExc_AttributeError, "Invalid characters in string.");
+        return NULL;
     }
 
+    // Py_BuildValue creates PyObject, y# to have bytearray
+    pyobj_encoded = Py_BuildValue("y#", barcode_data, barcode_len);
     pyobj_length = Py_BuildValue("i", barcode_len);
-    if (pyobj_length != NULL) {
-        tmp_len = self->length;
-        Py_INCREF(pyobj_length);
-        self->length = pyobj_length;
-        Py_XDECREF(tmp_len);
-    } else {
-        /* PyBuild_value:
-           Returns the value or NULL in the case of an error; an exception will be raised if NULL is returned */
-    }
+    set_output_values(self, pyobj_encoded, pyobj_length);
+    free(barcode_data);
 
     Py_RETURN_NONE;
 }
 
+
+static int
+PyCode128_traverse(PyCode128Object *self, visitproc visit, void *arg)
+{
+    Py_VISIT(self->input_data);
+    Py_VISIT(self->encoded_data);
+    Py_VISIT(self->length);
+    return 0;
+}
+
+
+static int
+PyCode128_clear(PyCode128Object *self)
+{
+    Py_CLEAR(self->input_data);
+    Py_CLEAR(self->encoded_data);
+    Py_CLEAR(self->length);
+    return 0;
+}
 
 
 PyDoc_STRVAR(estimate_len_doc,  "Returns label's estimated length.");
@@ -231,10 +253,10 @@ PyDoc_STRVAR(encode_raw_doc,    "Encode raw string.\nReturns the length of barco
 /* methods definition */
 // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
 static PyMethodDef PyCode128_methods[] = {
-    /*  ml_name,                ml_meth,              ml_flags,         ml_doc           */
-    {"estimate_len",    (PyCFunction)estimate_len,   METH_NOARGS,   estimate_len_doc},
-    {"encode_gs1",      (PyCFunction)encode_gs1,     METH_NOARGS,   encode_gs1_doc},
-    {"encode_raw",      (PyCFunction)encode_raw,     METH_NOARGS,   encode_raw_doc},
+    /*  ml_name,                ml_meth,                         ml_flags,         ml_doc       */
+    {"estimate_len",    (PyCFunction)PyCode128_estimate_len,   METH_NOARGS,   estimate_len_doc},
+    {"encode_gs1",      (PyCFunction)PyCode128_encode_gs1,     METH_NOARGS,   encode_gs1_doc},
+    {"encode_raw",      (PyCFunction)PyCode128_encode_raw,     METH_NOARGS,   encode_raw_doc},
     {NULL}  /* Sentinel */
 };
 
@@ -255,6 +277,25 @@ PyCode128_new(PyTypeObject *type, PyObject *args, PyObject *kw)
         self->input_data = PyUnicode_FromString("");
         if (self->input_data == NULL) {
             Py_XDECREF(self->input_data);
+            Py_XDECREF(self);
+            // self is probably not null here, so force the return value
+            return NULL;
+        }
+
+        self->encoded_data = PyUnicode_FromString("");
+        if (self->encoded_data == NULL) {
+            Py_XDECREF(self->input_data);
+            Py_XDECREF(self->encoded_data);
+            Py_XDECREF(self);
+            // self is probably not null here, so force the return value
+            return NULL;
+        }
+
+        self->length = PyLong_FromUnsignedLong(0);
+        if (self->length == NULL) {
+            Py_XDECREF(self->input_data);
+            Py_XDECREF(self->encoded_data);
+            Py_XDECREF(self->length);
             Py_XDECREF(self);
             // self is probably not null here, so force the return value
             return NULL;
@@ -294,9 +335,8 @@ PyCode128_init(PyCode128Object *self, PyObject *args, PyObject *kw)
 static void
 PyCode128_dealloc(PyCode128Object *self)
 {
-    Py_XDECREF(self->input_data);
-    Py_XDECREF(self->encoded_data);
-    Py_XDECREF(self->length);
+    PyObject_GC_UnTrack(self);
+    PyCode128_clear(self);
     Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -324,24 +364,19 @@ PyCode128_get_input_data(PyCode128Object *self, void *closure)
 static int
 PyCode128_set_input_data(PyCode128Object *self, PyObject *value, void *closure)
 {
-    int rc = -1;
-    PyObject *tmp;
-
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete the input_data attribute.");
-    } else {
-        if (!PyUnicode_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "value should be unicode");
-        } else {
-            rc = 0; // return value
-            tmp = self->input_data;
-            Py_INCREF(value);
-            self->input_data = value;
-            Py_DECREF(tmp);
-        }
+        return -1;
+    }
+    if (!PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "value should be unicode");
+        return -1;
     }
 
-    return rc;
+    Py_INCREF(value);
+    Py_CLEAR(self->input_data);
+    self->input_data = value;
+    return 0;
 }
 
 static PyObject *
@@ -366,6 +401,7 @@ static PyGetSetDef PyCode128_getsetters[] = {
     {"input_data",      (getter)PyCode128_get_input_data,   (setter)PyCode128_set_input_data,   input_data_doc },
     {"encoded_data",    (getter)PyCode128_get_encoded_data, NULL},  // read-only
     {"length",          (getter)PyCode128_get_length,       NULL},  // read-only
+    {NULL}  /* Sentinel */
 };
 
 
@@ -408,10 +444,12 @@ static PyTypeObject PyCode128Type = {
     .tp_doc = pycode128_type_doc,
     .tp_basicsize = sizeof(PyCode128Object),
     .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
     .tp_new = PyCode128_new,
     .tp_init = (initproc) PyCode128_init,
     .tp_dealloc = (destructor) PyCode128_dealloc,
+    .tp_traverse = (traverseproc) PyCode128_traverse,
+    .tp_clear = (inquiry) PyCode128_clear,
     .tp_getset = PyCode128_getsetters,
     .tp_members = PyCode128_members,
     .tp_methods = PyCode128_methods,
@@ -463,7 +501,7 @@ static PyObject* module_init(void) {
 
     if (PyModule_AddObject(module, "PyCode128", (PyObject *) &PyCode128Type) < 0) {
         Py_DECREF(&PyCode128Type);
-        Py_DECREF(&module);
+        Py_DECREF(module);
         return NULL;
     }
 
