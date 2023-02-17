@@ -151,10 +151,7 @@ jobs:
             poetry env info --path
             cp -f {project}/check_c/runner $(poetry env info --path)/bin
             LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
-          CIBW_ENVIRONMENT_MACOS: |
-            MACOSX_DEPLOYMENT_TARGET="12.0"
-            MACOS_DEPLOYMENT_TARGET="12.0"
-            SYSTEM_VERSION_COMPAT=0
+          CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET="12.0" MACOS_DEPLOYMENT_TARGET="12.0" SYSTEM_VERSION_COMPAT=0
 
       - name: show temporary files
         run: |
