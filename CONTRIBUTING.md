@@ -57,6 +57,10 @@ Ready to contribute? Here's how to set up `pycode128` for local development.
 
 3. Ensure [poetry](https://python-poetry.org/docs/) is installed.
 
+    On Windows, make sure to have installed [Microsoft C++ Build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/),
+    MSYS2, `mingw-w64-i686-toolchain`, `mingw-w64-x86_64-toolchain` and
+    `base-devel` packages.
+
 4. Install dependencies and start your virtualenv:
    ```bash
    $ poetry update
