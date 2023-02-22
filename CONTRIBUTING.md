@@ -57,7 +57,15 @@ Ready to contribute? Here's how to set up `pycode128` for local development.
 
 3. Ensure [poetry](https://python-poetry.org/docs/) is installed.
 
-4. Install dependencies and start your virtualenv:
+    On Windows, make sure to have installed [Microsoft C++ Build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/),
+    MSYS2, `mingw-w64-i686-toolchain`, `gcc`, `cmake`, `mingw-w64-x86_64-toolchain` and
+    `base-devel` packages ([link 1](https://www.freecodecamp.org/news/how-to-install-c-and-cpp-compiler-on-windows/),
+    [link 2](https://www.devdungeon.com/content/install-gcc-compiler-windows-msys2-cc)).
+
+4. Make sure Python exe/binary exist in the path having name `python3.xx.exe` (copy/paste `python.exe` and change the name).
+   This is needed into tox environments to switch correct poetry environment based on python version.
+
+5. Install dependencies and start your virtualenv:
    ```bash
    $ poetry update
    $ poetry install -E test -E doc -E dev
