@@ -49,7 +49,7 @@
             mypy = "^0.961"
             pytest  = "^7.2.0"
             pytest-cov  = "^4.0.0"
-            tox  = "^3.25.0"
+            tox  = "^4.4.6"
             virtualenv  = "^20.2.2"
             twine  = "^3.3.0"
             Sphinx = "4.2.0"
@@ -69,7 +69,6 @@
             reuse = "^1.1.0"
             setuptools = "^67.1.0"
             wheel = "^0.38.4"
-            tox-direct = "^0.4"
             cibuildwheel = "^2.12.0"
 
 
@@ -189,17 +188,18 @@ max-line-length=120
     build-backend = "poetry.core.masonry.api"
 
 
+# locally can be run with 'poetry run cibuildwheel --platform ...'
 [tool.cibuildwheel]
     build-frontend = "pip"
     build-verbosity = 3
 
     before-test = "python -m pip install --upgrade pip"
-    test-requires = ["poetry", "tox", "pytest", "tox-direct"]
+    test-requires = ["poetry", "tox", "pytest"]
     test-command = [
         # takes tox & pytest configs from setup.cfg
         # change to project dir where pyproject.toml exists
         "cd {project}",
-        'poetry run tox --skip-pkg-install --direct-yolo -e py3.10'
+        'poetry run tox --skip-pkg-install -e py3.11'
     ]
 
     # Skip CPython 3.6 and CPython 3.7 , Disable building PyPy wheels on all platforms
