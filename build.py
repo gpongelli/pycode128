@@ -43,6 +43,11 @@ else:
     elif 'aarch64' in platform.machine():
         _arch = "armv8.8-a"  # pylint: disable=C0103
 
+_march = f"-march={_arch}"  # pylint: disable=C0103
+if 'darwin' in _platform:
+    _march = ""  # clang compiler does not support -march=x86_64
+
+
 # list of tuples (python_module, dict of C/C++ library build data ),
 #   python_module is the extension that uses those C/C++ library info.
 # the dict can be extended with all the kwargs needed by Extension to correctly build C/C++ sourcecode
@@ -52,7 +57,7 @@ _LIBS = [
         {
             "libs": ['libs/code128'],
             # Building library part
-            "lib_cflags": ["-O2", "-std=c99", "-Wall", "-fpic", "-Wextra", f"-march={_arch}", "-DADD_EXPORTS"],
+            "lib_cflags": ["-O2", "-std=c99", "-Wall", "-fpic", "-Wextra", _march, "-DADD_EXPORTS"],
             "lib_lflags": ["-shared", _lflags],
             # Python extension part
             # always define PY_SSIZE_T_CLEAN , see https://docs.python.org/3/extending/extending.html
