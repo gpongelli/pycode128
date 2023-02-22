@@ -45,7 +45,7 @@ else:
 
 _march = f"-march={_arch}"  # pylint: disable=C0103
 if 'darwin' in _platform:
-    _march = ""  # clang compiler does not support -march=x86_64
+    _march = ""  # pylint: disable=C0103  # clang compiler does not support -march=x86_64
 
 
 # list of tuples (python_module, dict of C/C++ library build data ),
