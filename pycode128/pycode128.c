@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "code128.h"
 
@@ -203,14 +204,27 @@ static PyObject* PyCode128_encode_raw(PyCode128Object *self, PyObject *Py_UNUSED
         return NULL;
     }
 
+    // encode FNC3 if found
+    char raw[strlen(data) + 1];
+    char *p = raw;
+    for (; *data != '\0'; data++) {
+        if (strncmp(data, "[FNC3]", 6) == 0) {
+            *p++ = CODE128_FNC3;
+            data += 5;
+        } else if (*data != ' ') {
+            *p++ = *data;
+        }
+    }
+    *p = '\0';
+
     // get barcode length and allocate output char *
-    max_length = code128_estimate_len(data);
+    max_length = code128_estimate_len(raw);
     barcode_data = (char *) malloc(max_length * 2);
     if (barcode_data == NULL) {
         return NULL;
     }
 
-    barcode_len = code128_encode_raw(data, &barcode_data[0], max_length);
+    barcode_len = code128_encode_raw(raw, &barcode_data[0], max_length);
     if (barcode_len == 0) {
         PyErr_SetString(PyExc_AttributeError, "Invalid characters in string.");
         return NULL;
@@ -490,12 +504,6 @@ static PyObject* module_init(void) {
     {
         return NULL;
     }
-
-    /* Add macros to module */
-    PyModule_AddIntMacro(module, CODE128_FNC1);
-    PyModule_AddIntMacro(module, CODE128_FNC2);
-    PyModule_AddIntMacro(module, CODE128_FNC3);
-    PyModule_AddIntMacro(module, CODE128_FNC4);
 
     Py_XINCREF(&PyCode128Type);
 
