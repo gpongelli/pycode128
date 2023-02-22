@@ -66,7 +66,7 @@ def pycode128(data: str, image_name: str, loglevel: str):
     click.echo(f"Encoded data: {_code128.encoded_data}")
 
     if image_name:
-        click.echo(f"Saving image to file {image_name}")
+        click.echo(f"Saving image to file: {image_name}")
         Code128Image(_code128.encoded_data).get_image().save(image_name)
 
 
