@@ -6,6 +6,8 @@
 
 """Tests for `pycode128` cli tool."""
 
+import os
+
 from click.testing import CliRunner
 
 from pycode128 import __version__
@@ -40,3 +42,4 @@ def test_command_line_argument():
     out_file = runner.invoke(cli.pycode128, ['test', '-i', 'outfile.png'])
     assert out_file.exit_code == 0
     assert 'Saving image to file: outfile.png' in out_file.output
+    os.unlink('outfile.png')
