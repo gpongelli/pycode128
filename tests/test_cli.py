@@ -8,8 +8,8 @@
 
 from click.testing import CliRunner
 
-from pycode128.cli_tools import cli
 from pycode128 import __version__
+from pycode128.cli_tools import cli
 
 
 def test_command_line_interface():

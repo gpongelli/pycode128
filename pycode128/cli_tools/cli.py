@@ -10,13 +10,11 @@ from typing import Any, Callable, TypeVar, cast
 
 import click
 from cloup import option, option_group
-
 from python_active_versions.utility import configure_logger
 
 from pycode128 import __version__
-from pycode128.pycode128 import PyCode128  # pylint: disable=ungrouped-imports   # pylint: disable=no-name-in-module
 from pycode128.code128_image import Code128Image
-
+from pycode128.pycode128 import PyCode128  # pylint: disable=ungrouped-imports   # pylint: disable=no-name-in-module
 
 F = TypeVar('F', bound=Callable[..., Any])
 
