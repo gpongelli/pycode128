@@ -74,9 +74,9 @@ def pycode128(data: str, image_name: str, add_cr: bool, label_prog: bool, loglev
     configure_logger(loglevel)
 
     if add_cr:
-        data = data + "\r"
+        data = f"{data}\r"
     if label_prog:
-        data = "[FNC3] $" + data + "\r"
+        data = f"[FNC3] ${data}\r"
     _code128 = PyCode128(data)
     _code128.encode_raw()
     echo(f"Input string: {data}")

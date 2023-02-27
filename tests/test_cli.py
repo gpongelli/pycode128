@@ -52,3 +52,18 @@ def test_command_line_mutually_exclusive():
     ret = runner.invoke(cli.pycode128, ['-c', '-r', 'testlabel'])
     assert 'Error: the following parameters are mutually exclusive:' in ret.output
     assert ret.exit_code == 2
+
+
+def test_command_line_optional_arguments():
+    """Test the CLI optional arguments."""
+    runner = CliRunner()
+
+    carriage_return = runner.invoke(cli.pycode128, ["-c", "TEST"])
+    assert carriage_return.exit_code == 0
+    assert 'Input string: TEST' in carriage_return.output
+    assert 'Barcode length: 110' in carriage_return.output
+
+    label_prog = runner.invoke(cli.pycode128, ["-r", "TEST"])
+    assert label_prog.exit_code == 0
+    assert 'Input string: [FNC3] $TEST' in label_prog.output
+    assert 'Barcode length: 132' in label_prog.output
