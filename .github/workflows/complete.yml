@@ -39,18 +39,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
-      - name: Define tox OS name
-        id: tox_os_name
-        run: |
-          if [ ${RUNNER_OS/Linux/} != ${RUNNER_OS} ]; then
-            echo "TOX_OS=lin" >> $GITHUB_OUTPUT
-          elif [ ${RUNNER_OS/Windows/} != "${RUNNER_OS}" ]; then
-            echo "TOX_OS=win" >> $GITHUB_OUTPUT
-          elif [ ${RUNNER_OS/macOS/} != "${RUNNER_OS}" ]; then
-            echo "TOX_OS=mac" >> $GITHUB_OUTPUT
-          fi
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -109,6 +97,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+      - name: Define tox OS name
+        id: tox_os_name
+        run: |
+          if [ ${RUNNER_OS/Linux/} != ${RUNNER_OS} ]; then
+            echo "TOX_OS=lin" >> $GITHUB_OUTPUT
+          elif [ ${RUNNER_OS/Windows/} != "${RUNNER_OS}" ]; then
+            echo "TOX_OS=win" >> $GITHUB_OUTPUT
+          elif [ ${RUNNER_OS/macOS/} != "${RUNNER_OS}" ]; then
+            echo "TOX_OS=mac" >> $GITHUB_OUTPUT
+          fi
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
