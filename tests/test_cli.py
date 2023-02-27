@@ -8,7 +8,6 @@
 
 import os
 
-import pytest
 from click.testing import CliRunner
 
 from pycode128 import __version__
