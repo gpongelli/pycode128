@@ -8,6 +8,7 @@
 
 import os
 
+import pytest
 from click.testing import CliRunner
 
 from pycode128 import __version__
@@ -43,3 +44,12 @@ def test_command_line_argument():
     assert out_file.exit_code == 0
     assert 'Saving image to file: outfile.png' in out_file.output
     os.unlink('outfile.png')
+
+
+def test_command_line_mutually_exclusive():
+    """Test the CLI arguments mutually exclusive."""
+    runner = CliRunner()
+
+    ret = runner.invoke(cli.pycode128, ['-c', '-r', 'testlabel'])
+    assert 'Error: the following parameters are mutually exclusive:' in ret.output
+    assert ret.exit_code == 2
