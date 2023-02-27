@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-# This is a basic workflow to help you get started with Actions
+# This is a complete workflow triggered when developing and when releasing packages.
 
 name: complete workflow
 
@@ -62,10 +62,10 @@ jobs:
 
       - name: Lint checks with tox
         run:
-          poetry run tox --skip-pkg-install --direct-yolo -e lint
+          poetry run tox --skip-pkg-install -e lint
 
       - name: Build and check documentation
-        run: poetry run tox --skip-pkg-install --direct-yolo -e docs
+        run: poetry run tox --skip-pkg-install -e docs
 
 
   build-test:
@@ -89,6 +89,12 @@ jobs:
             python-sw: "3.9.16"
           - python-version: "3.8"
             python-sw: "3.8.16"
+          - os: ubuntu-latest
+            tox_os: "lin"
+          - os: windows-latest
+            tox_os: "win"
+          - os: macos-latest
+            tox_os: "mac"
     runs-on: ${{ matrix.os }}
 
     outputs:
@@ -139,7 +145,7 @@ jobs:
           CIBW_BUILD: ${{ steps.set_cibuildwheel_build.outputs.cibw_build_version }}
           CIBW_TEST_COMMAND: |
             cd {project}
-            poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
+            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ steps.set_cibuildwheel_build.outputs.manylinux_image }}
           CIBW_BEFORE_TEST_LINUX: |
             cd {project}
@@ -147,7 +153,7 @@ jobs:
             cd {project}/check_c && make extract && make build
           CIBW_TEST_COMMAND_LINUX: |
             cd {project}
-            poetry run tox --skip-pkg-install --direct-yolo -e py${{ matrix.python-version }}
+            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-lin
             poetry env info --path
             cp -f {project}/check_c/runner $(poetry env info --path)/bin
             LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
@@ -173,7 +179,7 @@ jobs:
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./xml_coverage_py${{ matrix.python-version }}.xml
+          files: ./xml_coverage_py${{ matrix.python-version }}-mac.xml
 
   build-sdist:
     needs: pre-checks
@@ -270,7 +276,7 @@ jobs:
         uses: actions/configure-pages@v2
 
       - name: build documentation
-        run: poetry run tox --skip-pkg-install --direct-yolo -e docs
+        run: poetry run tox --skip-pkg-install -e docs
 
       - name: Upload Sphinx doc artifact
         uses: actions/upload-pages-artifact@v1

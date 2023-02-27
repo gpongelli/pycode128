@@ -35,7 +35,7 @@ except FileNotFoundError:
 # -- Project information -----------------------------------------------------
 
 project = "pycode128"
-copyright = "2022, Gabriele Pongelli"
+copyright = "2023, Gabriele Pongelli"
 author = "Gabriele Pongelli"
 
 # The full version, including alpha/beta/rc tags
