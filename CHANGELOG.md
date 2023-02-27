@@ -1,3 +1,29 @@
+## 1.0.0 (2023-02-27)
+
+### Feat
+
+- new tests on optional cli parameters
+- using cloup
+- flake8 skips darglint on CLI tool. using tab alignment
+- skip darglint on private methods, main or pycode128 method
+- unify tox env
+- cli implementation and tests, fix twine
+- manage FNC3 and remove unused macros
+- tests for FNC3 string
+- new tests on generated image
+- add typed files
+
+### Fix
+
+- tox os name using github action matrix
+- remove generated file for test
+- test
+- build and install package to avoid pylint E0401: Unable to import 'pycode128.pycode128' (import-error)
+- disable uppercase variable
+- march not supported by clang
+- tox-direct no more needed
+- add windows call for poetry and reuse
+
 ## 0.4.0 (2023-02-17)
 
 ### Feat
