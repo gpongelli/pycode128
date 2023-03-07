@@ -29,7 +29,7 @@
     ]
 
     [tool.poetry.build]
-        script = "build.py"
+        script = "build_extension.py"
         generate-setup-file = true
 
     [tool.poetry.dependencies]
