@@ -1,3 +1,11 @@
+## 2.0.0 (2023-03-07)
+
+### Fix
+
+- renamed file to avoid naming clash with build package
+- tox platform specification
+- generate setup.py file used by pip, called from cibuildwheel
+
 ## 1.0.0 (2023-02-27)
 
 ### Feat
