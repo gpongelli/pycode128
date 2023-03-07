@@ -73,7 +73,7 @@
             types-termcolor = "^1.1.5"
             types-setuptools = "^65.3.0"
             reuse = "^1.1.0"
-            setuptools = "^67.1.0"
+            setuptools = "^67.5.0"
             wheel = "^0.38.4"
             cibuildwheel = "^2.12.0"
             check-python-versions = "^0.21.2"
