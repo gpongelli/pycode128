@@ -22,12 +22,15 @@
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
     ]
+
     packages = [
         { include = "pycode128" },
     ]
+
     include = [
         { path = "tests", format = "sdist" },
-        { path = "libs", format = "sdist" }
+        { path = "libs", format = "sdist" },
+        { path = "LICENSES" },
     ]
 
     [tool.poetry.build]
@@ -190,7 +193,7 @@
 max-line-length=120
 
 [build-system]
-    requires = ["setuptools", "poetry-core>=1.0.0"]
+    requires = ["setuptools", "poetry-core>=1.4.0"]
     build-backend = "poetry.core.masonry.api"
 
 
