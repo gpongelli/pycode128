@@ -65,6 +65,7 @@ _LIBS = [
             "extension_language": "c99",
             "extension_extra_compile_args": [],
             "extension_extra_link_args": [],
+            "extension_library": ['code128'],
         },
     )
 ]
@@ -181,6 +182,7 @@ def build(setup_kwargs):
                     sources=[_unix_form(path)],
                     define_macros=_source_libs['extension_define_macros'],
                     include_dirs=_source_libs['libs'],
+                    libraries=_source_libs['extension_library'],
                     language=_source_libs["extension_language"],
                     extra_compile_args=_source_libs["extension_extra_compile_args"],
                     extra_link_args=_source_libs["extension_extra_link_args"],
