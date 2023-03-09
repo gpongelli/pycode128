@@ -2170,7 +2170,7 @@ jeepney = ">=0.6"
 name = "setuptools"
 version = "67.6.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2835,4 +2835,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
         python-versions = ">=3.8.0,<4.0"
-content-hash = "101ad6682f5d58fc97bd297a335534208014899fb6be294c1987cb158a9104b3"
+content-hash = "b71721202c293f2f3cf801b324dd65916dd474bc27bec928e88ef3284bd91800"

@@ -203,7 +203,7 @@ max-line-length=120
     build-verbosity = 3
 
     before-test = "python -m pip install --upgrade pip"
-    test-requires = ["poetry", "tox", "pytest"]
+    test-requires = ["poetry"]
     test-command = [
         # takes tox & pytest configs from setup.cfg
         # change to project dir where pyproject.toml exists
