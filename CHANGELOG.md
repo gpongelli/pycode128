@@ -1,3 +1,12 @@
+## 2.1.0 (2023-03-09)
+
+### Feat
+
+- install packages called within poetry
+- using TOX basepython that has already correct python name depending on platform
+- reorganize tox skip installation and use commands_pre
+- removed unused package, correct includes
+
 ## 2.0.0 (2023-03-07)
 
 ### Fix
