@@ -1,3 +1,9 @@
+## 2.2.0rc2 (2023-03-15)
+
+### Feat
+
+- add setup.cfg used during build extension
+
 ## 2.2.0rc1 (2023-03-15)
 
 ### Fix
