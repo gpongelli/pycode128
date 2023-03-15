@@ -1,3 +1,14 @@
+## 2.2.0rc0 (2023-03-15)
+
+### Feat
+
+- when building wheel from downloaded source, setup.cfg must be found
+
+### Fix
+
+- ARM image not working
+- yamllint was removed
+
 ## 2.1.0 (2023-03-09)
 
 ### Feat
