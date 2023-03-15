@@ -31,6 +31,7 @@
         { path = "tests", format = "sdist" },
         { path = "libs", format = "sdist" },
         { path = "LICENSES" },
+        { path = "setup.cfg", format = "sdist" },
     ]
 
     [tool.poetry.build]
