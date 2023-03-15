@@ -109,6 +109,11 @@ class CustomDevelop(develop):
 def _add_compiler_to_setup_cfg(_compiler):
     conf = configparser.ConfigParser(inline_comment_prefixes="#")
 
+    print(f"Folder path: {Path(os.path.realpath(os.path.dirname(__file__)))}")
+    print("Folder content:")
+    for _el in Path(os.path.realpath(os.path.dirname(__file__))).iterdir():
+        print(_el)
+
     with open(Path(os.path.realpath(os.path.dirname(__file__))) / 'setup.cfg', mode='r', encoding="cp1252") as _fp:
         try:
             conf.read_file(_fp)
