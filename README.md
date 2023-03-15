@@ -26,8 +26,8 @@ Python extension for Code128 barcode generator library
 * Multiple OS (Linux, Windows, MacOS) and Python compilation via [cibuildwhel](https://github.com/pypa/cibuildwheel)
 * [cibuildwheel manylinux_2_28 custom images](https://hub.docker.com/r/gpongelli/manylinux_python) with pre-built python from source,
   to being able to compile check against correct python version
-* [ARM-runner action](https://github.com/pguyot/arm-runner-action) custom [images](https://github.com/gpongelli/arm-runner-python/releases)
-  with pre-built python from source, to build RPI wheels
+* ~~[ARM-runner action](https://github.com/pguyot/arm-runner-action) custom [images](https://github.com/gpongelli/arm-runner-python/releases)
+  with pre-built python from source, to build RPI wheels~~
 
 ## Credits
 
