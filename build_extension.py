@@ -9,6 +9,7 @@ import os
 import platform
 from glob import glob
 from os.path import join, relpath, splitext
+from pathlib import Path
 
 from setuptools.command.develop import develop
 from setuptools.extension import Extension
@@ -108,7 +109,7 @@ class CustomDevelop(develop):
 def _add_compiler_to_setup_cfg(_compiler):
     conf = configparser.ConfigParser(inline_comment_prefixes="#")
 
-    with open('setup.cfg', mode='r', encoding="cp1252") as _fp:
+    with open(Path(os.path.realpath(os.path.dirname(__file__))) / 'setup.cfg', mode='r', encoding="cp1252") as _fp:
         try:
             conf.read_file(_fp)
         except configparser.Error:
