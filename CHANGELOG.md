@@ -1,3 +1,9 @@
+## 2.2.0 (2023-03-20)
+
+### Fix
+
+- use poetry 1.4.1 with poetry-core 1.5.2 that fixes windows build
+
 ## 2.2.0rc2 (2023-03-15)
 
 ### Feat
