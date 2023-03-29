@@ -71,7 +71,9 @@ formatter_settings = HelpFormatter.settings(
     ),
 )
 @version_option(__version__)
-def pycode128(data: str, image_name: str, add_cr: bool, label_prog: bool, action_label: bool, loglevel: str):
+def pycode128(
+    data: str, image_name: str, add_cr: bool, label_prog: bool, action_label: bool, loglevel: str
+):  # pylint: disable=R0913
     """Code128 barcode generator library."""
     _fnc_name = cast(types.FrameType, inspect.currentframe()).f_code.co_name
     _complete_doc = inspect.getdoc(eval(_fnc_name))  # pylint: disable=eval-used  # nosec B307
