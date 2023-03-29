@@ -47,6 +47,15 @@ formatter_settings = HelpFormatter.settings(
         required=False,
         help="Convert to Label Programming Barcode.",
     ),
+    option(
+        "-a",
+        "--action-label",
+        "action_label",
+        is_flag=True,
+        type=bool,
+        required=False,
+        help="Convert to Action Label Barcode.",
+    ),
     constraint=mutually_exclusive,
 )
 @option_group(
@@ -62,7 +71,7 @@ formatter_settings = HelpFormatter.settings(
     ),
 )
 @version_option(__version__)
-def pycode128(data: str, image_name: str, add_cr: bool, label_prog: bool, loglevel: str):
+def pycode128(data: str, image_name: str, add_cr: bool, label_prog: bool, action_label: bool, loglevel: str):
     """Code128 barcode generator library."""
     _fnc_name = cast(types.FrameType, inspect.currentframe()).f_code.co_name
     _complete_doc = inspect.getdoc(eval(_fnc_name))  # pylint: disable=eval-used  # nosec B307
@@ -77,6 +86,8 @@ def pycode128(data: str, image_name: str, add_cr: bool, label_prog: bool, loglev
         data = f"{data}\r"
     if label_prog:
         data = f"[FNC3] ${data}\r"
+    if action_label:
+        data = f"[FNC3] {data}\r"
     _code128 = PyCode128(data)
     _code128.encode_raw()
     echo(f"Input string: {data}")
