@@ -1,3 +1,15 @@
+## 2.3.0 (2023-03-29)
+
+### Feat
+
+- action label management
+- update submodule branch
+
+### Fix
+
+- action label test
+- updated submodule
+
 ## 2.2.0 (2023-03-20)
 
 ### Fix
