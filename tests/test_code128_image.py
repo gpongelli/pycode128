@@ -54,3 +54,13 @@ def test_compare_image_fnc3():
     _image_expected = Image.open(Path.cwd().joinpath("tests").joinpath("fnc3_dollar_p.png"))
     _diff = ImageChops.difference(_image_gen.get_image(), _image_expected)
     assert not _diff.getbbox()
+
+
+def test_compare_image_action_label():
+    """Compare image with existing one."""
+    _code128 = PyCode128('[FNC3] RevA\r')
+    _code128.encode_raw()
+    _image_gen = Code128Image(_code128.encoded_data)
+    _image_expected = Image.open(Path.cwd().joinpath("tests").joinpath("action_label.png"))
+    _diff = ImageChops.difference(_image_gen.get_image(), _image_expected)
+    assert not _diff.getbbox()
