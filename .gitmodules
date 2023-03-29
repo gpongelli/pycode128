@@ -5,4 +5,4 @@
 [submodule "pycode128/lib"]
 	path = libs/code128
 	url = https://github.com/gpongelli/code128
-	branch = master
+	branch = fix_fnc3_win_versioning
