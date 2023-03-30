@@ -1,3 +1,9 @@
+## 2.4.0 (2023-03-30)
+
+### Feat
+
+- updated submodule reference
+
 ## 2.3.0 (2023-03-29)
 
 ### Feat
