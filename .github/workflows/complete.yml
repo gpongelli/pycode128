@@ -143,10 +143,6 @@ jobs:
         uses: pypa/cibuildwheel@v2.12.0
         env:
           CIBW_BUILD: ${{ steps.set_cibuildwheel_build.outputs.cibw_build_version }}
-          CIBW_TEST_COMMAND: |
-            cd {project}  &&
-            poetry install --with devel --sync --no-root  &&
-            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ steps.set_cibuildwheel_build.outputs.manylinux_image }}
           CIBW_BEFORE_TEST_LINUX: |
             cd {project}  &&
@@ -160,6 +156,14 @@ jobs:
             cp -f {project}/check_c/runner $(poetry env info --path)/bin  &&
             LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
           CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET="12.0" MACOS_DEPLOYMENT_TARGET="12.0" SYSTEM_VERSION_COMPAT=0
+          CIBW_TEST_COMMAND_MACOS: |
+            cd {project}  &&
+            poetry install --with devel --sync --no-root  &&
+            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
+          CIBW_TEST_COMMAND_WINDOWS : |
+            cd {project}
+            poetry install --with devel --sync --no-root
+            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
 
       - name: show temporary files
         run: |
