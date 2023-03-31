@@ -160,10 +160,7 @@ jobs:
             cd {project}  && 
             poetry install --with devel --sync --no-root  && 
             poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
-          CIBW_TEST_COMMAND_WINDOWS: >
-            cd {project} && 
-            poetry install --with devel --sync --no-root && 
-            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
+          CIBW_TEST_COMMAND_WINDOWS: cd {project} && poetry install --with devel --sync --no-root && poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
 
       - name: show temporary files
         run: |
