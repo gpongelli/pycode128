@@ -153,15 +153,15 @@ jobs:
           CIBW_BUILD: ${{ steps.set_cibuildwheel_build.outputs.cibw_build_version }}
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ steps.set_cibuildwheel_build.outputs.manylinux_image }}
           CIBW_BEFORE_TEST_LINUX: >
-            cd {project}
-            python3 -m pip install --upgrade pip
+            cd {project} &&
+            python3 -m pip install --upgrade pip &&
             cd {project}/check_c && make extract && make build
           CIBW_TEST_COMMAND_LINUX: >
             cd ${{ env.cd_option }} {project} &&
-            poetry install --with devel --sync --no-root
-            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
-            poetry env info --path
-            cp -f {project}/check_c/runner $(poetry env info --path)/bin
+            poetry install --with devel --sync --no-root &&
+            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }} &&
+            poetry env info --path &&
+            cp -f {project}/check_c/runner $(poetry env info --path)/bin &&
             LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
           CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET="12.0" MACOS_DEPLOYMENT_TARGET="12.0" SYSTEM_VERSION_COMPAT=0
           CIBW_TEST_COMMAND: >
