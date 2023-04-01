@@ -100,6 +100,7 @@ jobs:
     outputs:
       cibw_build_version: ""
       manylinux_image: ""
+      cd_option: ""
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -128,6 +129,13 @@ jobs:
         with:
           platforms: all
 
+      # cd silently fails when moving on different drive in Windows, it needs /d to act correctly
+      # see https://github.com/pypa/cibuildwheel/issues/1448
+      - name: Setup change dir option for windows in cibuildwheel
+        if: runner.os == 'Windows'
+        run: |
+          echo "cd_option=/d" >> $env:GITHUB_ENV
+
       - name: Setting python version for cibuildwheel
         uses: actions/github-script@v6
         id: set_cibuildwheel_build
@@ -147,22 +155,14 @@ jobs:
           CIBW_BEFORE_TEST_LINUX: >
             cd {project}  &&
             python3 -m pip install --upgrade pip  &&
-            cd {project}/check_c && make extract && make build
-          CIBW_TEST_COMMAND_LINUX: >
-            cd {project}  &&
-            poetry install --with devel --sync --no-root  &&
-            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-lin  &&
+            cd {project}/check_c && make extract && make build &&
             poetry env info --path  &&
             cp -f {project}/check_c/runner $(poetry env info --path)/bin  &&
             LD_LIBRARY_PATH={project}/check_c/installed/lib64:$LD_LIBRARY_PATH poetry run runner
           CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET="12.0" MACOS_DEPLOYMENT_TARGET="12.0" SYSTEM_VERSION_COMPAT=0
-          CIBW_TEST_COMMAND_MACOS: >
-            cd {project}  &&
-            poetry install --with devel --sync --no-root  &&
-            poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
-          CIBW_TEST_COMMAND_WINDOWS: |
-            cd {project}
-            poetry install --with devel --sync --no-root
+          CIBW_TEST_COMMAND: >
+            cd ${{ env.cd_option }} {project} &&
+            poetry install --with devel --sync --no-root &&
             poetry run tox --skip-pkg-install -e py${{ matrix.python-version }}-${{ matrix.tox_os }}
 
       - name: show temporary files
