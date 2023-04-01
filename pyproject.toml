@@ -34,6 +34,12 @@
         { path = "setup.cfg", format = "sdist" },
     ]
 
+    [tool.poetry.urls]
+        "Issue Tracker" = "https://github.com/gpongelli/pycode128/issues"
+        "Documentation" = "https://gpongelli.github.io/pycode128/"
+        "Changelog" = "https://gpongelli.github.io/pycode128/history.html"
+        "Source" = "https://github.com/gpongelli/pycode128"
+
     [tool.poetry.build]
         script = "build_extension.py"
         generate-setup-file = true
