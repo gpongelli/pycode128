@@ -70,6 +70,11 @@ def test_command_line_optional_arguments():
     assert 'Input string: [FNC3] $TEST' in label_prog.output
     assert 'Barcode length: 132' in label_prog.output
 
+    action_label = runner.invoke(cli.pycode128, ["-a", "TEST"])
+    assert action_label.exit_code == 0
+    assert 'Input string: [FNC3] TEST' in action_label.output
+    assert 'Barcode length: 121' in action_label.output
+
 
 @patch('logging.basicConfig')
 def test_logger(patched_log):
