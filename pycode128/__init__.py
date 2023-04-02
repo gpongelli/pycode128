@@ -6,4 +6,4 @@
 
 __author__ = "Gabriele Pongelli"
 __email__ = "gabriele.pongelli@gmail.com"
-__version__ = "2.5.0"
+__version__ = "3.0.0"

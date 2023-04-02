@@ -4,7 +4,7 @@
 
 [tool.poetry]
     name = "pycode128"
-    version = "2.5.0"
+    version = "3.0.0"
     homepage = "https://github.com/gpongelli/pycode128"
     description = "Python extension for Code128 barcode generator library."
     authors = ["Gabriele Pongelli <gabriele.pongelli@gmail.com>"]
@@ -85,7 +85,7 @@
             wheel = "^0.38.4"
             cibuildwheel = "^2.12.0"
 
-    [tool.poetry.group.pyvers]
+        [tool.poetry.group.pyvers]
         optional = true
         [tool.poetry.group.pyvers.dependencies]
             check-python-versions = "^0.21.2"
@@ -128,7 +128,7 @@
 
 [tool.commitizen]
     name = "cz_conventional_commits"
-    version = "2.5.0"
+    version = "3.0.0"
     version_files = [
         "pycode128/__init__.py:__version__",
         "pyproject.toml:version"
