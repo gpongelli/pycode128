@@ -321,5 +321,5 @@ jobs:
         with:
           user: ${{ secrets.pypi_username }}
           password: ${{ secrets.pypi_password }}
-          skip_existing: true
+          skip-existing: true
           packages_dir: ./wheelhouse/built_artifacts/
