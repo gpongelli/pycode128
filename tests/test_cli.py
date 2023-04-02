@@ -6,7 +6,9 @@
 
 """Tests for `pycode128` cli tool."""
 
+import logging
 import os
+from unittest.mock import patch
 
 from click.testing import CliRunner
 
@@ -67,3 +69,40 @@ def test_command_line_optional_arguments():
     assert label_prog.exit_code == 0
     assert 'Input string: [FNC3] $TEST' in label_prog.output
     assert 'Barcode length: 132' in label_prog.output
+
+
+@patch('logging.basicConfig')
+def test_logger(patched_log):
+    """Testing configure_logger.
+
+    Arguments:
+        patched_log: patched basicConfig method
+    """
+    cli.configure_logger()
+    patched_log.assert_called_with(
+        level=logging.INFO, format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s', handlers=None
+    )
+
+    cli.configure_logger('info')
+    patched_log.assert_called_with(
+        level=logging.INFO, format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s', handlers=None
+    )
+
+    cli.configure_logger('debug')
+    patched_log.assert_called_with(
+        level=logging.DEBUG,
+        format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s',
+        handlers=None,
+    )
+
+    cli.configure_logger('warning')
+    patched_log.assert_called_with(
+        level=logging.WARN, format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s', handlers=None
+    )
+
+    cli.configure_logger('error')
+    patched_log.assert_called_with(
+        level=logging.ERROR,
+        format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s',
+        handlers=None,
+    )
