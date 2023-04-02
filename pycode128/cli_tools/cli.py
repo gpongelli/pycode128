@@ -5,13 +5,13 @@
 """Console script for pycode128."""
 
 import inspect
+import logging
 import types
 from typing import Any, Callable, TypeVar, cast
 
 from click import Choice, echo, version_option
 from cloup import HelpFormatter, HelpTheme, Style, argument, command, option, option_group
 from cloup.constraints import mutually_exclusive
-from python_active_versions.utility import configure_logger
 
 from pycode128 import __version__
 from pycode128.code128_image import Code128Image
@@ -30,6 +30,28 @@ formatter_settings = HelpFormatter.settings(
         col1=Style(fg='bright_yellow'),
     )
 )
+
+
+def configure_logger(level: str = 'info') -> None:
+    """Configure logger facility from server or client in same way, changing only the output file.
+
+    Arguments:
+        level: level of logging facility
+    """
+    # configure logging
+    _log_level = logging.INFO
+    if level.lower() == 'debug':
+        _log_level = logging.DEBUG
+    elif level.lower() == 'warning':
+        _log_level = logging.WARNING
+    elif level.lower() == 'error':
+        _log_level = logging.ERROR
+
+    logging.basicConfig(
+        level=_log_level,
+        format='%(asctime)s [%(levelname)s - %(filename)s:%(lineno)d]    %(message)s',
+        handlers=None,
+    )
 
 
 @command(context_settings=CONTEXT_SETTINGS, show_constraints=True, formatter_settings=formatter_settings)

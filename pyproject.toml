@@ -84,8 +84,12 @@
             setuptools = "^67.5.0"
             wheel = "^0.38.4"
             cibuildwheel = "^2.12.0"
+
+    [tool.poetry.group.pyvers]
+        optional = true
+        [tool.poetry.group.pyvers.dependencies]
             check-python-versions = "^0.21.2"
-            python-active-versions = "^1.5.0"
+            python-active-versions = "^1.8.0"
 
 
     [tool.poetry.scripts]
